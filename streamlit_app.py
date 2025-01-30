@@ -32,12 +32,12 @@ def similarity(name_input, year_input, index_input):
 
     st.write(f"Target Player's Stats for {name_input} in {year_input}:")
     target_player_info = non_transform_df.iloc[index_input]
-    st.write(target_player_info[['Full Name', 'year', *data.columns]])
+    st.dataframe(target_player_info[['Full Name', 'year', *data.columns]].style.format(precision=2))  # Round for display
 
     if valid_indices:
         similar_player_info = non_transform_df.iloc[valid_indices]
         st.write(f"5 most similar players to {name_input} in {year_input}:")
-        st.write(similar_player_info)  # Just write the DataFrame directly
+        st.dataframe(similar_player_info.style.format(precision=2))  # Round for display
     else:
         st.write(f"No similar players found for {name_input} in {year_input}")
 
