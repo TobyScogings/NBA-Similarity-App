@@ -71,4 +71,3 @@ if selected_year is not None: #Checks if a year has been selected
         st.write(f"No players found for the year {selected_year}")
 else:
     st.write("No years available in the data.")
-st.dataframe(similar_player_info.style.format(precision=2))
