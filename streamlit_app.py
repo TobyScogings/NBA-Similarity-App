@@ -13,16 +13,18 @@ knn = NearestNeighbors(n_neighbors=20, metric='euclidean')  # Use more neighbors
 knn.fit(data)
 
 def user_input():
-    # Use unique keys for the input widgets
-    name_input = st.text_input("Start typing a player name:", key="player_name_input")
     
-    # Filter the list of players based on user input
+    name_input = st.text_input("Start typing a player name:")
+
+    # Filter the list of players based on the text input
     filtered_players = df['Full Name'][df['Full Name'].str.contains(name_input, case=False, na=False)].tolist() if name_input else []
-    
-    # Show the filtered suggestions
-    st.write("Suggestions:")
-    for player in filtered_players:
-        st.write(player)
+
+    if filtered_players:
+        # Create a selectbox with the filtered players
+        player_selection = st.selectbox("Select a player", filtered_players)
+        st.write(f"You selected: {player_selection}")
+    else:
+        st.write("No matching players found")
     
     # Add a unique key to the year_input element
     year_input = st.number_input("Select a year", min_value=2020, max_value=2024, step=1, value=2024, key="year_input")
