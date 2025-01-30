@@ -28,14 +28,14 @@ def user_input():
         
         # Check if the input is valid (player exists and the year is within the allowed range)
         if st.button("Find Similar Players"):
-        if name_input not in df['Full Name'].values or year_input not in df['year'].values:
-            st.error("This player or year is not valid, please try again.")
-        else:
-            # Get the index of the player
-            index_input = df.index.get_loc(df[(df['Full Name'] == name_input) & (df['year'] == year_input)].index[0])
-            st.write(f"Name: {name_input}")
-            st.write(f"Year: {year_input}")
-            st.write(f"Row Index: {index_input}")
+            if name_input not in df['Full Name'].values or year_input not in df['year'].values:
+                st.error("This player or year is not valid, please try again.")
+            else:
+                # Get the index of the player
+                index_input = df.index.get_loc(df[(df['Full Name'] == name_input) & (df['year'] == year_input)].index[0])
+                st.write(f"Name: {name_input}")
+                st.write(f"Year: {year_input}")
+                st.write(f"Row Index: {index_input}")
 
 def similarity(name_input, year_input, index_input):
 
