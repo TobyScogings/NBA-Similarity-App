@@ -6,7 +6,7 @@ from sklearn.neighbors import NearestNeighbors
 df = pd.read_csv("model_data.csv")
 non_transform_df = pd.read_csv("model_data_pre-transform.csv")
 data = df.drop(columns=['player_id', 'Full Name', 'team_name', 'year'])
-st.dataframe(similar_player_info.style.format(precision=2))
+
 
 # --- Similarity Function ---
 def similarity(name_input, year_input, index_input):
@@ -71,3 +71,4 @@ if selected_year is not None: #Checks if a year has been selected
         st.write(f"No players found for the year {selected_year}")
 else:
     st.write("No years available in the data.")
+st.dataframe(similar_player_info.style.format(precision=2))
