@@ -13,7 +13,6 @@ knn = NearestNeighbors(n_neighbors=20, metric='euclidean')  # Use more neighbors
 knn.fit(data)
 
 def user_input():
-    
     name_input = st.text_input("Start typing a player name:")
 
     # Filter the list of players based on the text input
@@ -40,8 +39,14 @@ def user_input():
             st.write(f"Year: {year_input}")
             st.write(f"Row Index: {index_input}")
             return name_input, year_input, index_input
+    
+    # Return None if no valid input is provided
+    return None, None, None
 
 def similarity(name_input, year_input, index_input):
+    if not name_input or not year_input or index_input is None:
+        st.error("Invalid input. Please make sure to select a player and year.")
+        return
 
     # Reshape the targets stats into the format needed for the KNN model
     target_stats = data.iloc[index_input].values.reshape(1, -1)
