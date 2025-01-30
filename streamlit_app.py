@@ -14,9 +14,9 @@ knn.fit(data)
 
 def user_input():
     while True:
-        name_input = st.text_input("Start typing a player name:")
+        name_input = st.text_input("Start typing a player name:", key="player_name_input")
         
-        # Filter the list of cities based on user input
+        # Filter the list of players based on user input
         filtered_players = df['Full Name'][df['Full Name'].str.contains(name_input, case=False, na=False)].tolist() if name_input else []
         
         # Show the filtered suggestions
@@ -24,7 +24,8 @@ def user_input():
         for player in filtered_players:
             st.write(player)
         
-        year_input = st.number_input("Select a year", min_value=2020, max_value=2024, step=1, value=2024)
+        # Add a unique key to the year_input element
+        year_input = st.number_input("Select a year", min_value=2020, max_value=2024, step=1, value=2024, key="year_input")
         
         # Check if the input is valid (player exists and the year is within the allowed range)
         if st.button("Find Similar Players"):
@@ -36,6 +37,7 @@ def user_input():
                 st.write(f"Name: {name_input}")
                 st.write(f"Year: {year_input}")
                 st.write(f"Row Index: {index_input}")
+                return name_input, year_input, index_input
 
 def similarity(name_input, year_input, index_input):
 
