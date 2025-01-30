@@ -6,18 +6,12 @@ from sklearn.neighbors import NearestNeighbors
 df = pd.read_csv("model_data.csv")
 non_transform_df = pd.read_csv("model_data_pre-transform.csv")
 data = df.drop(columns=['player_id', 'Full Name', 'team_name', 'year'])
-st.write(df.columns)
-st.write(non_transform_df.columns)
-
 
 # --- Similarity Function ---
 def similarity(name_input, year_input, index_input):
     if not name_input or not year_input or index_input is None:
         st.error("Invalid input. Please make sure to select a player and year.")
         return
-
-    st.write(df.columns)
-    st.write(non_transform_df.columns)
 
     target_stats = data.iloc[index_input].values.reshape(1, -1)
     target_stats_df = pd.DataFrame(target_stats, columns=data.columns)
@@ -40,13 +34,10 @@ def similarity(name_input, year_input, index_input):
     target_player_info = non_transform_df.iloc[index_input]
     st.write(target_player_info[['Full Name', 'year', *data.columns]])
 
-    st.write(df.columns)
-    st.write(non_transform_df.columns)
-
     if valid_indices:
         similar_player_info = non_transform_df.iloc[valid_indices]
         st.write(f"5 most similar players to {name_input} in {year_input}:")
-        st.write(similar_player_info[['Full Name', 'year', *non_transform_df.columns]])
+        st.write(similar_player_info)  # Just write the DataFrame directly
     else:
         st.write(f"No similar players found for {name_input} in {year_input}")
 
@@ -80,9 +71,3 @@ if selected_year is not None: #Checks if a year has been selected
         st.write(f"No players found for the year {selected_year}")
 else:
     st.write("No years available in the data.")
-
-st.write(df.columns)
-st.write(non_transform_df.columns)
-
-
-
