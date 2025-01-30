@@ -18,6 +18,7 @@ def user_input():
     # Filter the list of players based on the text input
     filtered_players = df['Full Name'][df['Full Name'].str.contains(name_input, case=False, na=False)].unique().tolist() if name_input else []
 
+    player_selection = None
     if filtered_players:
         # Create a selectbox with the filtered players
         player_selection = st.selectbox("Select a player", filtered_players)
@@ -30,15 +31,15 @@ def user_input():
     
     # Check if the input is valid (player exists and the year is within the allowed range)
     if st.button("Find Similar Players"):
-        if name_input not in df['Full Name'].values or year_input not in df['year'].values:
+        if player_selection not in df['Full Name'].values or year_input not in df['year'].values:
             st.error("This player or year is not valid, please try again.")
         else:
             # Get the index of the player
-            index_input = df.index.get_loc(df[(df['Full Name'] == name_input) & (df['year'] == year_input)].index[0])
-            st.write(f"Name: {name_input}")
+            index_input = df.index.get_loc(df[(df['Full Name'] == player_selection) & (df['year'] == year_input)].index[0])
+            st.write(f"Name: {player_selection}")
             st.write(f"Year: {year_input}")
             st.write(f"Row Index: {index_input}")
-            return name_input, year_input, index_input
+            return player_selection, year_input, index_input
     
     # Return None if no valid input is provided
     return None, None, None
@@ -48,9 +49,9 @@ def similarity(name_input, year_input, index_input):
         st.error("Invalid input. Please make sure to select a player and year.")
         return
 
-    # Reshape the targets stats into the format needed for the KNN model
+    # Reshape the target's stats into the format needed for the KNN model
     target_stats = data.iloc[index_input].values.reshape(1, -1)
-    target_stats_df = pd.DataFrame(target_stats, columns = data.columns)
+    target_stats_df = pd.DataFrame(target_stats, columns=data.columns)
 
     # Find the nearest datapoints and their respective distances to the user input
     distances, indices = knn.kneighbors(target_stats_df)
@@ -64,7 +65,6 @@ def similarity(name_input, year_input, index_input):
     # Iterate through every index, in order, that we found to be similar 
     for i in indices[0]:
         similar_name = df.iloc[i]['Full Name']
-
         if similar_name != name_input and similar_name not in seen_names:
             valid_indices.append(i)
             seen_names.add(similar_name)
