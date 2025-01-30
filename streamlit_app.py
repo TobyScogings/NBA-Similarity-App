@@ -40,6 +40,9 @@ def user_input():
             st.write(f"Year: {year_input}")
             st.write(f"Row Index: {index_input}")
             return player_selection, year_input, index_input
+
+    st.write(f"Cleaned name input: '{name_input_clean}'")
+    st.write(f"Cleaned year input: {year_input_clean}")
     
     # Return None if no valid input is provided
     return None, None, None
