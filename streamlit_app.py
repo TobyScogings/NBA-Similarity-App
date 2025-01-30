@@ -20,15 +20,14 @@ def similarity(name_input, year_input, index_input):
 
     valid_indices = []
     seen_names = set()
-
+    all_valid_indices = [] #List to store all valid indices
     for i in indices[0]:
         similar_name = df.iloc[i]['Full Name']
-        similar_year = df.iloc[i]['year']
-        if similar_name != name_input and similar_name not in seen_names and similar_year == year_input: #Added year filter
-            valid_indices.append(i)
+        if similar_name != name_input and similar_name not in seen_names:  # Removed year filter here
+            all_valid_indices.append(i)
             seen_names.add(similar_name)
-        if len(valid_indices) == 5:
-            break
+
+    valid_indices = all_valid_indices[:5] 
 
     st.write(f"Target Player's Stats for {name_input} in {year_input}:")
     target_player_info = non_transform_df.iloc[index_input]
