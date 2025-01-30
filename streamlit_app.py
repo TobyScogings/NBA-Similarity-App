@@ -17,7 +17,7 @@ def user_input():
     name_input = st.text_input("Start typing a player name:")
 
     # Filter the list of players based on the text input
-    filtered_players = df['Full Name'][df['Full Name'].str.contains(name_input, case=False, na=False)].tolist() if name_input else []
+    filtered_players = df['Full Name'][df['Full Name'].str.contains(name_input, case=False, na=False)].unique().tolist() if name_input else []
 
     if filtered_players:
         # Create a selectbox with the filtered players
