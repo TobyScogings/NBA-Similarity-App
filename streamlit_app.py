@@ -36,9 +36,6 @@ def user_input():
         else:
             # Get the index of the player
             index_input = df.index.get_loc(df[(df['Full Name'] == player_selection) & (df['year'] == year_input)].index[0])
-            st.write(f"Name: {player_selection}")
-            st.write(f"Year: {year_input}")
-            st.write(f"Row Index: {index_input}")
             return player_selection, year_input, index_input
 
     st.write(f"Cleaned name input: '{name_input_clean}'")
@@ -75,7 +72,7 @@ def similarity(name_input, year_input, index_input):
             break
 
     st.write(f"Target Player's Stats for {name_input}:")
-    target_player_info = df.iloc[index_input]
+    target_player_info = non_transform_df.iloc[index_input]
     st.write(target_player_info[['Full Name', 'year', *data.columns]])  # Display relevant columns
 
     # Display the 5 most similar players
