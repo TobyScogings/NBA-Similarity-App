@@ -37,7 +37,7 @@ def similarity(name_input, year_input, index_input):
     st.dataframe(target_player_info[['Full Name', 'year', *data.columns]].style.format(precision=2), hide_index=True)  # Now it works
 
     if valid_indices:
-        similar_player_info = non_transform_df.iloc[valid_indices]
+        similar_player_info = non_transform_df.iloc[valid_indices].drop(columns=['player_id'])
         st.write(f"5 most similar players to {name_input} in {year_input}:")
         st.dataframe(similar_player_info.style.format(precision=2), hide_index=True)  # Round for display
     else:
