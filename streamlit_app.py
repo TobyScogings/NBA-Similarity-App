@@ -29,12 +29,14 @@ def user_input():
     else:
         st.write("No matching players found")
 
-    # Validity check: If no valid input, return None
+    # Validity check: Ensure both player and year are valid
     if st.button("Find Similar Players"):
-        if player_selection not in df['Full Name'].values or year not in df['year'].values:
+        # Make sure both the player and year are valid combinations
+        valid_rows = df[(df['Full Name'] == player_selection) & (df['year'] == year)]
+        if valid_rows.empty:
             st.error("Invalid player or year selected. Please try again.")
         else:
-            index_input = df.index.get_loc(df[(df['Full Name'] == player_selection) & (df['year'] == year)].index[0])
+            index_input = valid_rows.index[0]  # Get the index of the player for the selected year
             return player_selection, year, index_input
 
     return None, None, None
