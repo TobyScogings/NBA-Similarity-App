@@ -31,8 +31,8 @@ def similarity(name_input, year_input, index_input):
     valid_indices = all_valid_indices[:5] 
 
     st.write(f"Target Player's Stats for {name_input} in {year_input}:")
-    target_player_info = non_transform_df.iloc[index_input]
-    st.dataframe(target_player_info[['Full Name', 'year', *data.columns]].style.format(precision=2))  # Round for display
+    target_player_info = non_transform_df.iloc[index_input].to_frame().T  # Convert to DataFrame
+    st.dataframe(target_player_info[['Full Name', 'year', *data.columns]].style.format(precision=2))  # Now it works
 
     if valid_indices:
         similar_player_info = non_transform_df.iloc[valid_indices]
