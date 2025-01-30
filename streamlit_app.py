@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd, numpy as np
 from sklearn.neighbors import NearestNeighbors
 
+st.set_page_config(layout="wide")
+
 # Load data (make sure these paths are correct)
 df = pd.read_csv("model_data.csv")
 non_transform_df = pd.read_csv("model_data_pre-transform.csv")
