@@ -49,7 +49,7 @@ knn.fit(data)
 st.title("Player Similarity App")  # Add a title
 
 # Year selection
-years = sorted(df['year'].unique().tolist())
+years = sorted(df['year'].unique().tolist(), reverse=True)
 default_year = max(years) if years else None #Default year handling if the list is empty
 selected_year = st.selectbox("Select Year", years, index=years.index(default_year) if default_year in years else 0) if years else None
 
