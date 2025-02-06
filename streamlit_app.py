@@ -15,45 +15,45 @@ non_transform_df = pd.read_csv("model_data_pre-transform.csv")
 
 df = df.rename(columns={
     'points': 'Points',
-    'totReb': 'Total Rebounds',
+    'totReb': 'Rebounds',
     'assists': 'Assists',
     'steals': 'Steals',
     'blocks': 'Blocks',
     'min': 'Minutes',
-    'fga': 'Field Goals Attempted',
-    'fg%': 'Field Goal Percentage',
-    'tpa': 'Three-Point Attempts',
-    'tp%': 'Three-Point Percentage',
-    'fta': 'Free Throws Attempted',
-    'ft%': 'Free Throw Percentage',
-    'defReb': 'Defensive Rebounds',
-    'offReb': 'Offensive Rebounds',
-    'pFouls': 'Personal Fouls',
-    'turnovers': 'Turnovers'
+    'fga': 'FGA',
+    'fg%': 'FG%',
+    'tpa': '3PA',
+    'tp%': '3P%',
+    'fta': 'FTA',
+    'ft%': 'FT%',
+    'defReb': 'Def. Rebounds',
+    'offReb': 'Off. Rebounds',
+    'pFouls': 'PF',
+    'turnovers': 'TO'
 })
 
 non_transform_df = non_transform_df.rename(columns={
     'points': 'Points',
-    'totReb': 'Total Rebounds',
+    'totReb': 'Rebounds',
     'assists': 'Assists',
     'steals': 'Steals',
     'blocks': 'Blocks',
     'min': 'Minutes',
-    'fga': 'Field Goals Attempted',
-    'fg%': 'Field Goal Percentage',
-    'tpa': 'Three-Point Attempts',
-    'tp%': 'Three-Point Percentage',
-    'fta': 'Free Throws Attempted',
-    'ft%': 'Free Throw Percentage',
-    'defReb': 'Defensive Rebounds',
-    'offReb': 'Offensive Rebounds',
-    'pFouls': 'Personal Fouls',
-    'turnovers': 'Turnovers'
+    'fga': 'FGA',
+    'fg%': 'FG%',
+    'tpa': '3PA',
+    'tp%': '3P%',
+    'fta': 'FTA',
+    'ft%': 'FT%',
+    'defReb': 'Def. Rebounds',
+    'offReb': 'Off. Rebounds',
+    'pFouls': 'PF',
+    'turnovers': 'TO'
 })
 
 data = df.drop(columns=['player_id', 'Full Name', 'team_name', 'year'])
 # Percentiles Bar Chart
-custom_order = ['Points', 'Total Rebounds', 'Assists', 'Steals', 'Blocks', 'Minutes', 'Field Goals Attempted', 'Field Goal Percentage', 'Three-Point Attempts', 'Three-Point Percentage', 'Free Throws Attempted', 'Free Throw Percentage', 'Defensive Rebounds', 'Offensive Rebounds', 'Personal Fouls', 'Turnovers']
+custom_order = ['Points', 'Rebounds', 'Assists', 'Steals', 'Blocks', 'Minutes', 'FGA', 'FG%', '3PA', '3P%', 'FTA', 'FT%', 'Def. Rebounds', 'Off. Rebounds', 'PF', 'TO']
 
 # Calculate the percentiles
 percentile_df = non_transform_df[custom_order].apply(lambda x: x.rank(pct=True) * 100)
