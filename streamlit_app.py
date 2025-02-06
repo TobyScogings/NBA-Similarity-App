@@ -48,16 +48,16 @@ def similarity(name_input, year_input, index_input):
     # Percentiles Bar Chart
     target_player_percentile = percentile_df.iloc[index_input]
     
-    percentile_df = target_player_percentile.to_frame(name="Percentile")
-    percentile_df['Stat'] = percentile_df.index  # Add the stat names as a column
+    percentile_df_for_chart = target_player_percentile.to_frame(name="Percentile")
+    percentile_df_for_chart['Stat'] = percentile_df_for_chart.index  # Add the stat names as a column
     
     # Create the Altair bar chart with a custom order
-    chart = alt.Chart(percentile_df).mark_bar().encode(
+    chart = alt.Chart(percentile_df_for_chart).mark_bar().encode(
         x=alt.X('Percentile:Q', title='Percentile'),
         y=alt.Y('Stat:N', sort=custom_order, title='Stat'),
         color='Stat:N',
     ).properties(
-        title=f'Percentiles for Player {target_player_percentile.name}'
+        title=f'Percentiles for Player {name_input} in {year_input}'
     )
     
     # Display the chart using Streamlit
