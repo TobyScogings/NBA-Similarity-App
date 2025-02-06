@@ -45,15 +45,20 @@ def similarity(name_input, year_input, index_input):
     player_percentiles = df_percentiles.iloc[index_input]
 
     # Plot bar chart for each stat
-    player_percentiles.plot(kind='bar', figsize=(10, 6), colormap='viridis')
+    fig, ax = plt.subplots(figsize=(10, 6))  
+
+    # Plot the player's percentile rankings
+    player_percentiles.plot(kind='bar', ax=ax, colormap='viridis')
     
     # Graph Formatting
-    plt.title(f"{name_input}'s Percentile Rankings ({year_input})")
-    plt.xlabel('Stat')
-    plt.ylabel('Percentile (%)')
-    plt.xticks(rotation=45)  
-    plt.ylim(0, 100)  
-    st.pyplot(plt)
+    ax.set_title(f"{name_input}'s Percentile Rankings ({year_input})")
+    ax.set_xlabel('Stat')
+    ax.set_ylabel('Percentile (%)')
+    ax.set_xticklabels(player_percentiles.index, rotation=45)
+    ax.set_ylim(0, 100)  # Ensure percentiles stay within the range
+    
+    # Display the plot in Streamlit
+    st.pyplot(fig)
 
     if valid_indices:
         similar_player_info = non_transform_df.iloc[valid_indices].drop(columns=['player_id'])
