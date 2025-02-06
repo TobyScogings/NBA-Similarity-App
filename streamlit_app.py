@@ -45,7 +45,10 @@ def similarity(name_input, year_input, index_input):
     # Prepare the data for the bar chart (only percentiles for the current player)
     player_percentiles_df = player_percentiles.reset_index()
     player_percentiles_df.columns = ['Stat', 'Percentile']
-    
+
+    # Reorder the dataframe columns to match the original order of the stats
+    player_percentiles_df = player_percentiles_df.set_index('Stat').reindex(data.columns).reset_index()
+
     # Plot the bar chart
     st.bar_chart(player_percentiles_df.set_index('Stat')['Percentile'], use_container_width=True)
 
