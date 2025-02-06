@@ -10,6 +10,47 @@ st.set_page_config(layout="wide")
 # Load data (make sure these paths are correct)
 df = pd.read_csv("model_data.csv")
 non_transform_df = pd.read_csv("model_data_pre-transform.csv")
+
+# Column renaming
+
+df = df.rename(columns={
+    'points': 'Points',
+    'totReb': 'Total Rebounds',
+    'assists': 'Assists',
+    'steals': 'Steals',
+    'blocks': 'Blocks',
+    'min': 'Minutes',
+    'fga': 'Field Goals Attempted',
+    'fg%': 'Field Goal Percentage',
+    'tpa': 'Three-Point Attempts',
+    'tp%': 'Three-Point Percentage',
+    'fta': 'Free Throws Attempted',
+    'ft%': 'Free Throw Percentage',
+    'defReb': 'Defensive Rebounds',
+    'offReb': 'Offensive Rebounds',
+    'pFouls': 'Personal Fouls',
+    'turnovers': 'Turnovers'
+})
+
+non_transfrom_df = non_transform_df.rename(columns={
+    'points': 'Points',
+    'totReb': 'Total Rebounds',
+    'assists': 'Assists',
+    'steals': 'Steals',
+    'blocks': 'Blocks',
+    'min': 'Minutes',
+    'fga': 'Field Goals Attempted',
+    'fg%': 'Field Goal Percentage',
+    'tpa': 'Three-Point Attempts',
+    'tp%': 'Three-Point Percentage',
+    'fta': 'Free Throws Attempted',
+    'ft%': 'Free Throw Percentage',
+    'defReb': 'Defensive Rebounds',
+    'offReb': 'Offensive Rebounds',
+    'pFouls': 'Personal Fouls',
+    'turnovers': 'Turnovers'
+})
+
 data = df.drop(columns=['player_id', 'Full Name', 'team_name', 'year'])
 # Percentiles Bar Chart
 custom_order = ['points', 'totReb', 'assists', 'steals', 'blocks', 'min', 'fga', 'fg%', 
@@ -57,7 +98,7 @@ def similarity(name_input, year_input, index_input):
         y=alt.Y('Stat:N', sort=custom_order, title='Stat'),
         color=alt.Color('Percentile:Q', scale=alt.Scale(domain=[0, 100], range=['red', 'green']), legend=None),
     ).properties(
-        title=f'Percentiles for Player {name_input} in {year_input}',
+        title=f'Percentiles for {name_input} in {year_input}',
         width=400
     )
     
