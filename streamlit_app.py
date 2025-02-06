@@ -45,7 +45,7 @@ def similarity(name_input, year_input, index_input):
     player_percentiles = df_percentiles.iloc[index_input]
 
     # Plot bar chart for each stat
-    fig, ax = plt.subplots(figsize=(10, 6))  
+    fig, ax = plt.subplots(figsize=(2, 3))  
 
     # Plot the player's percentile rankings
     player_percentiles.plot(kind='bar', ax=ax, colormap='viridis')
