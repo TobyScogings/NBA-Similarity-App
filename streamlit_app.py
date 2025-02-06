@@ -77,7 +77,6 @@ custom_order = ['player_id',
 # Calculate the percentiles
 percentile_df = non_transform_df[custom_order].apply(lambda x: x.rank(pct=True) * 100)
 
-
 # --- Similarity Function ---
 def similarity(name_input, year_input, index_input):
     if not name_input or not year_input or index_input is None:
