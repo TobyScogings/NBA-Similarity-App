@@ -53,11 +53,7 @@ non_transfrom_df = non_transform_df.rename(columns={
 
 data = df.drop(columns=['player_id', 'Full Name', 'team_name', 'year'])
 # Percentiles Bar Chart
-custom_order = ['player_id',
- 'Full Name',
- 'team_name',
- 'year',
- 'Points',
+custom_order = ['Points',
  'Total Rebounds',
  'Assists',
  'Steals',
