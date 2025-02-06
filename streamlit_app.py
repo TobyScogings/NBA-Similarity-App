@@ -28,8 +28,8 @@ df = df.rename(columns={
     'ft%': 'FT%',
     'defReb': 'Def. Rebounds',
     'offReb': 'Off. Rebounds',
-    'pFouls': 'PF',
-    'turnovers': 'TO'
+    'pFouls': 'Fouls',
+    'turnovers': 'Turnovers'
 })
 
 non_transform_df = non_transform_df.rename(columns={
@@ -47,13 +47,13 @@ non_transform_df = non_transform_df.rename(columns={
     'ft%': 'FT%',
     'defReb': 'Def. Rebounds',
     'offReb': 'Off. Rebounds',
-    'pFouls': 'PF',
-    'turnovers': 'TO'
+    'pFouls': 'Fouls',
+    'turnovers': 'Turnovers'
 })
 
 data = df.drop(columns=['player_id', 'Full Name', 'team_name', 'year'])
 # Percentiles Bar Chart
-custom_order = ['Points', 'Rebounds', 'Assists', 'Steals', 'Blocks', 'Minutes', 'FGA', 'FG%', '3PA', '3P%', 'FTA', 'FT%', 'Def. Rebounds', 'Off. Rebounds', 'PF', 'TO']
+custom_order = ['Points', 'Rebounds', 'Assists', 'Steals', 'Blocks', 'Minutes', 'FGA', 'FG%', '3PA', '3P%', 'FTA', 'FT%', 'Def. Rebounds', 'Off. Rebounds', 'Fouls', 'Turnovers']
 
 # Calculate the percentiles
 percentile_df = non_transform_df[custom_order].apply(lambda x: x.rank(pct=True) * 100)
