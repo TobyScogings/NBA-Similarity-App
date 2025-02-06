@@ -64,6 +64,11 @@ def similarity(name_input, year_input, index_input):
         st.error("Invalid input. Please make sure to select a player and year.")
         return
 
+    year_filtered_df = non_transform_df[non_transform_df['year'] == year_input]
+
+    # Recalculate percentiles based only on players from the selected year
+    percentile_df = year_filtered_df[custom_order].apply(lambda x: x.rank(pct=True) * 100)
+
     target_stats = data.iloc[index_input].values.reshape(1, -1)
     target_stats_df = pd.DataFrame(target_stats, columns=data.columns)
 
