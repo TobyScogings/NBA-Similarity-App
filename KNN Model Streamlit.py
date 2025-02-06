@@ -1,9 +1,6 @@
-### Changes to this document were made after the academy finished. This work did not fall within the scope of my final capstone project but was done as a personal passion project.
-
 import streamlit as st
 import pandas as pd, numpy as np
 from sklearn.neighbors import NearestNeighbors
-import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide")
 
@@ -38,22 +35,6 @@ def similarity(name_input, year_input, index_input):
     st.write(f"Target Player's Stats for {name_input} in {year_input}:")
     target_player_info = non_transform_df.iloc[index_input].to_frame().T  # Convert to DataFrame
     st.dataframe(target_player_info[['Full Name', 'year', *data.columns]].style.format(precision=2), hide_index=True)  # Now it works
-
-    # Percentiles Bar Chart
-    
-    df_percentiles = df.drop(columns=['player_id', 'Full Name', 'team_name', 'year']).rank(pct=True) * 100
-    player_percentiles = df_percentiles.iloc[index_input]
-
-    # Plot bar chart for each stat
-    player_percentiles.plot(kind='bar', figsize=(10, 6), colormap='viridis')
-    
-    # Graph Formatting
-    plt.title(f"{name_input}'s Percentile Rankings ({year_input})")
-    plt.xlabel('Stat')
-    plt.ylabel('Percentile (%)')
-    plt.xticks(rotation=45)  
-    plt.ylim(0, 100)  
-    st.pyplot(plt)
 
     if valid_indices:
         similar_player_info = non_transform_df.iloc[valid_indices].drop(columns=['player_id'])
