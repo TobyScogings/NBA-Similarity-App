@@ -2,8 +2,6 @@
 
 Data Analytics training project converted into personal development passion project. An app built to allow for comparison of NBA players' seasons since 2020
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://blank-app-template.streamlit.app/)
-
 ### How to run it on your own machine
 
 1. Install the requirements
