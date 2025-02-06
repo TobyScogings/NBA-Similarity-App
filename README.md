@@ -17,3 +17,11 @@ A simple Streamlit app template for you to modify!
    ```
    $ streamlit run streamlit_app.py
    ```
+
+
+# Future Changes
+
+- New input system - dynamic stat inputs for hypothetical comparison
+- Improved output comparisons
+- Per minute or per 36 minutes stat option
+- Improved system explanation on site
