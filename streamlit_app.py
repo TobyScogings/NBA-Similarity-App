@@ -62,7 +62,7 @@ def similarity(name_input, year_input, index_input):
     )
     
     # Display the chart using Streamlit
-    st.altair_chart(chart, use_container_width=True)
+    st.altair_chart(chart, use_container_width=False)
 
     if valid_indices:
         similar_player_info = non_transform_df.iloc[valid_indices].drop(columns=['player_id'])
