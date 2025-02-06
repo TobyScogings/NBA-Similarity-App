@@ -55,7 +55,7 @@ def similarity(name_input, year_input, index_input):
     chart = alt.Chart(percentile_df_for_chart).mark_bar().encode(
         x=alt.X('Percentile:Q', title='Percentile'),
         y=alt.Y('Stat:N', sort=custom_order, title='Stat'),
-        color='Stat:N',
+        color=alt.Color('Percentile:Q', scale=alt.Scale(domain=[0, 100], range=['red', 'green']), legend=None),
     ).properties(
         title=f'Percentiles for Player {name_input} in {year_input}'
     )
