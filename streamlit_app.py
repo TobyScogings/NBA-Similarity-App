@@ -39,19 +39,21 @@ def similarity(name_input, year_input, index_input):
     st.dataframe(target_player_info[['Full Name', 'year', *data.columns]].style.format(precision=2), hide_index=True)
 
     # Percentiles Bar Chart
+    custom_order = ['points', 'totReb', 'assists', 'steals', 'blocks', 'min', 'fga', 'fg%', 
+                    'tpa', 'tp%', 'fta', 'ft%', 'defReb', 'offReb', 'pFouls', 'turnovers']
+    
+    # Percentiles Bar Chart
     df_percentiles = df.drop(columns=['player_id', 'Full Name', 'team_name', 'year']).rank(pct=True) * 100
     player_percentiles = df_percentiles.iloc[index_input]
-
+    
     # Prepare the data for the bar chart (only percentiles for the current player)
-    player_percentiles_df = pd.DataFrame({
-        'Stat': player_percentiles.index,
-        'Percentile': player_percentiles.values
-    })
-
-    # Reorder the stats to match the original column order
-    player_percentiles_df = player_percentiles_df.set_index('Stat').reindex(data.columns).reset_index()
-
-    # Plot the bar chart
+    player_percentiles_df = player_percentiles.reset_index()
+    player_percentiles_df.columns = ['Stat', 'Percentile']
+    
+    # Reorder the stats to match your custom order
+    player_percentiles_df = player_percentiles_df.set_index('Stat').reindex(custom_order).reset_index()
+    
+    # Plot the bar chart with the custom order
     st.bar_chart(player_percentiles_df.set_index('Stat')['Percentile'], use_container_width=True)
 
     if valid_indices:
