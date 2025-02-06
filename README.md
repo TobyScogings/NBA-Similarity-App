@@ -15,7 +15,7 @@ Data Analytics training project converted into personal development passion proj
    ```
    $ streamlit run streamlit_app.py
    ```
-
+### Alternatively, access the website at `nbasimilarity.streamlit.app`
 
 # Future Changes
 
