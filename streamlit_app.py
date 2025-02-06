@@ -58,7 +58,7 @@ def similarity(name_input, year_input, index_input):
         color=alt.Color('Percentile:Q', scale=alt.Scale(domain=[0, 100], range=['red', 'green']), legend=None),
     ).properties(
         title=f'Percentiles for Player {name_input} in {year_input}',
-        width=100
+        width=400
     )
     
     # Display the chart using Streamlit
