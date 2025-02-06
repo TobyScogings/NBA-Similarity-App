@@ -1,4 +1,4 @@
-# 🎈 Blank app template
+# 🏀 NBA Player Comparison Tool 🏀 
 
 Data Analytics training project converted into personal development passion project. An app built to allow for comparison of NBA players' seasons since 2020
 
