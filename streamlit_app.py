@@ -92,54 +92,55 @@ def similarity(name_input, year_input, index_input):
     target_player_info = non_transform_df.iloc[index_input].to_frame().T
     st.dataframe(target_player_info[['Full Name', 'year', *data.columns]].style.format(precision=2), hide_index=True)
 
+    col1, col2 = st.columns(2)
     
     ### SELECTED SEASON PERCENTILES
     
+    with col1:
+        year_data = non_transform_df[non_transform_df['year'] == year_input]
+        percentile_df_year = year_data[data.columns].apply(lambda x: x.rank(pct=True) * 100)
     
-    year_data = non_transform_df[non_transform_df['year'] == year_input]
-    percentile_df_year = year_data[data.columns].apply(lambda x: x.rank(pct=True) * 100)
-
-    # ***Correct way to get the percentile***
-    target_player_row = non_transform_df[(non_transform_df['Full Name'] == name_input) & (non_transform_df['year'] == year_input)]
-    if not target_player_row.empty: #Check to make sure the row exists
-      target_player_index_year = target_player_row.index[0]
-      target_player_percentile = percentile_df_year.loc[target_player_index_year] #Use .loc to access the percentile by index
-
-      percentile_df_for_chart = target_player_percentile.to_frame(name="Percentile")
-      percentile_df_for_chart['Stat'] = percentile_df_for_chart.index
-
-      chart = alt.Chart(percentile_df_for_chart).mark_bar().encode(
-        x=alt.X('Percentile:Q', title='Percentile'),
-        y=alt.Y('Stat:N', sort=data.columns.tolist(), title='Stat'),
-        color=alt.Color('Percentile:Q', scale=alt.Scale(domain=[0, 100], range=['red', 'green']), legend=None),
-      ).properties(
-        title=f'Percentiles for {name_input} in {year_input}',
-        width=600
-      )
-      st.altair_chart(chart, use_container_width=False)
-    else:
-      st.write(f"No data found for {name_input} in {year_input} to calculate percentiles.")
+        # ***Correct way to get the percentile***
+        target_player_row = non_transform_df[(non_transform_df['Full Name'] == name_input) & (non_transform_df['year'] == year_input)]
+        if not target_player_row.empty: #Check to make sure the row exists
+          target_player_index_year = target_player_row.index[0]
+          target_player_percentile = percentile_df_year.loc[target_player_index_year] #Use .loc to access the percentile by index
+    
+          percentile_df_for_chart = target_player_percentile.to_frame(name="Percentile")
+          percentile_df_for_chart['Stat'] = percentile_df_for_chart.index
+    
+          chart = alt.Chart(percentile_df_for_chart).mark_bar().encode(
+            x=alt.X('Percentile:Q', title='Percentile'),
+            y=alt.Y('Stat:N', sort=data.columns.tolist(), title='Stat'),
+            color=alt.Color('Percentile:Q', scale=alt.Scale(domain=[0, 100], range=['red', 'green']), legend=None),
+          ).properties(
+            title=f'Percentiles for {name_input} in {year_input}.',
+            width=600
+          )
+          st.altair_chart(chart, use_container_width=False)
+        else:
+          st.write(f"No data found for {name_input} in {year_input} to calculate percentiles.")
 
     
     ### ALL TIME PERCENTILES
-
-    target_player_percentile = percentile_df.iloc[index_input]
-    
-    percentile_df_for_chart = target_player_percentile.to_frame(name="Percentile")
-    percentile_df_for_chart['Stat'] = percentile_df_for_chart.index  # Add the stat names as a column
-    
-    # Create the Altair bar chart with a custom order
-    chart = alt.Chart(percentile_df_for_chart).mark_bar().encode(
-        x=alt.X('Percentile:Q', title='Percentile'),
-        y=alt.Y('Stat:N', sort=custom_order, title='Stat'),
-        color=alt.Color('Percentile:Q', scale=alt.Scale(domain=[0, 100], range=['red', 'green']), legend=None),
-    ).properties(
-        title=f'Percentiles for {name_input} in {year_input}',
-        width=400
-    )
-    
-    # Display the chart using Streamlit
-    st.altair_chart(chart, use_container_width=False)
+    with col2:
+        target_player_percentile = percentile_df.iloc[index_input]
+        
+        percentile_df_for_chart = target_player_percentile.to_frame(name="Percentile")
+        percentile_df_for_chart['Stat'] = percentile_df_for_chart.index  # Add the stat names as a column
+        
+        # Create the Altair bar chart with a custom order
+        chart = alt.Chart(percentile_df_for_chart).mark_bar().encode(
+            x=alt.X('Percentile:Q', title='Percentile'),
+            y=alt.Y('Stat:N', sort=custom_order, title='Stat'),
+            color=alt.Color('Percentile:Q', scale=alt.Scale(domain=[0, 100], range=['red', 'green']), legend=None),
+        ).properties(
+            title=f'Percentiles for {name_input} in {year_input} compared to all five previous seasons.',
+            width=600
+        )
+        
+        # Display the chart using Streamlit
+        st.altair_chart(chart, use_container_width=False)
 
 
     ### SIMILAR PLAYERS OUTPUTS
