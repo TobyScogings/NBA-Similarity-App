@@ -53,22 +53,23 @@ non_transfrom_df = non_transform_df.rename(columns={
 
 data = df.drop(columns=['player_id', 'Full Name', 'team_name', 'year'])
 # Percentiles Bar Chart
-custom_order = ['Points',
- 'Total Rebounds',
- 'Assists',
- 'Steals',
- 'Blocks',
- 'Minutes',
- 'Field Goals Attempted',
- 'Field Goal Percentage',
- 'Three-Point Attempts',
- 'Three-Point Percentage',
- 'Free Throws Attempted',
- 'Free Throw Percentage',
- 'Defensive Rebounds',
- 'Offensive Rebounds',
- 'Personal Fouls',
- 'Turnovers']
+st.write(non_transform_df.columns)  # Debugging line
+
+# Adjust custom_order based on the actual column names in non_transform_df
+custom_order = ['Points', 'Total Rebounds', 'Assists', 'Steals', 'Blocks', 
+                'Minutes', 'Field Goals Attempted', 'Field Goal Percentage', 
+                'Three-Point Attempts', 'Three-Point Percentage', 
+                'Free Throws Attempted', 'Free Throw Percentage', 
+                'Defensive Rebounds', 'Offensive Rebounds', 'Personal Fouls', 
+                'Turnovers']
+
+# Check if the columns exist in non_transform_df
+missing_columns = [col for col in custom_order if col not in non_transform_df.columns]
+if missing_columns:
+    st.error(f"The following columns are missing in non_transform_df: {missing_columns}")
+else:
+    # Calculate the percentiles
+    percentile_df = non_transform_df[custom_order].apply(lambda x: x.rank(pct=True) * 100)
 
 # Calculate the percentiles
 percentile_df = non_transform_df[custom_order].apply(lambda x: x.rank(pct=True) * 100)
