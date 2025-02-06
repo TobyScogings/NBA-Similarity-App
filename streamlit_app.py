@@ -3,6 +3,7 @@
 import streamlit as st
 import pandas as pd, numpy as np
 from sklearn.neighbors import NearestNeighbors
+import altair as alt
 
 st.set_page_config(layout="wide")
 
@@ -46,7 +47,21 @@ def similarity(name_input, year_input, index_input):
 
     # Percentiles Bar Chart
     target_player_percentile = percentile_df.iloc[index_input]
-    st.bar_chart(target_player_percentile)
+    
+    percentile_df = target_player_percentile.to_frame(name="Percentile")
+    percentile_df['Stat'] = percentile_df.index  # Add the stat names as a column
+    
+    # Create the Altair bar chart with a custom order
+    chart = alt.Chart(percentile_df).mark_bar().encode(
+        x=alt.X('Percentile:Q', title='Percentile'),
+        y=alt.Y('Stat:N', sort=custom_order, title='Stat'),
+        color='Stat:N',
+    ).properties(
+        title=f'Percentiles for Player {target_player_percentile.name}'
+    )
+    
+    # Display the chart using Streamlit
+    st.altair_chart(chart, use_container_width=True)
 
     if valid_indices:
         similar_player_info = non_transform_df.iloc[valid_indices].drop(columns=['player_id'])
