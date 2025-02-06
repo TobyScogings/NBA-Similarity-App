@@ -10,6 +10,12 @@ st.set_page_config(layout="wide")
 df = pd.read_csv("model_data.csv")
 non_transform_df = pd.read_csv("model_data_pre-transform.csv")
 data = df.drop(columns=['player_id', 'Full Name', 'team_name', 'year'])
+# Percentiles Bar Chart
+custom_order = ['points', 'totReb', 'assists', 'steals', 'blocks', 'min', 'fga', 'fg%', 
+                'tpa', 'tp%', 'fta', 'ft%', 'defReb', 'offReb', 'pFouls', 'turnovers']
+
+# Calculate the percentiles
+percentile_df = non_transform_df[custom_order].apply(lambda x: x.rank(pct=True) * 100)
 
 
 # --- Similarity Function ---
@@ -39,22 +45,8 @@ def similarity(name_input, year_input, index_input):
     st.dataframe(target_player_info[['Full Name', 'year', *data.columns]].style.format(precision=2), hide_index=True)
 
     # Percentiles Bar Chart
-    custom_order = ['points', 'totReb', 'assists', 'steals', 'blocks', 'min', 'fga', 'fg%', 
-                    'tpa', 'tp%', 'fta', 'ft%', 'defReb', 'offReb', 'pFouls', 'turnovers']
-    
-    # Percentiles Bar Chart
-    df_percentiles = df.drop(columns=['player_id', 'Full Name', 'team_name', 'year']).rank(pct=True) * 100
-    player_percentiles = df_percentiles.iloc[index_input]
-    
-    # Prepare the data for the bar chart (only percentiles for the current player)
-    player_percentiles_df = player_percentiles.reset_index()
-    player_percentiles_df.columns = ['Stat', 'Percentile']
-    
-    # Reorder the stats to match your custom order
-    player_percentiles_df = player_percentiles_df.set_index('Stat').reindex(custom_order).reset_index()
-    
-    # Plot the bar chart with the custom order
-    st.bar_chart(player_percentiles_df.set_index('Stat')['Percentile'], use_container_width=True)
+    target_player_percentile = percentile_df.iloc[index_input]
+    st.bar_chart(target_player_percentile)
 
     if valid_indices:
         similar_player_info = non_transform_df.iloc[valid_indices].drop(columns=['player_id'])
