@@ -67,6 +67,10 @@ def similarity(name_input, year_input, index_input):
     target_stats = data.iloc[index_input].values.reshape(1, -1)
     target_stats_df = pd.DataFrame(target_stats, columns=data.columns)
 
+
+    ### MODELLING STAGE AND OUTPUT DEFINITIONS
+
+    
     distances, indices = knn.kneighbors(target_stats_df)
 
     valid_indices = []
@@ -80,11 +84,18 @@ def similarity(name_input, year_input, index_input):
 
     valid_indices = all_valid_indices[:5]
 
+
+    ### SELECTED PLAYER CURRENT STATS
+    
+
     st.write(f"Target Player's Stats for {name_input} in {year_input}:")
     target_player_info = non_transform_df.iloc[index_input].to_frame().T
     st.dataframe(target_player_info[['Full Name', 'year', *data.columns]].style.format(precision=2), hide_index=True)
 
-    # Percentiles Bar Chart (Corrected)
+    
+    ### SELECTED SEASON PERCENTILES
+    
+    
     year_data = non_transform_df[non_transform_df['year'] == year_input]
     percentile_df_year = year_data[data.columns].apply(lambda x: x.rank(pct=True) * 100)
 
@@ -102,14 +113,38 @@ def similarity(name_input, year_input, index_input):
         y=alt.Y('Stat:N', sort=data.columns.tolist(), title='Stat'),
         color=alt.Color('Percentile:Q', scale=alt.Scale(domain=[0, 100], range=['red', 'green']), legend=None),
       ).properties(
-        title=f'Percentiles for {name_input} in {year_input} (Compared to {year_input} Season)',
+        title=f'Percentiles for {name_input} in {year_input}',
         width=600
       )
       st.altair_chart(chart, use_container_width=False)
     else:
       st.write(f"No data found for {name_input} in {year_input} to calculate percentiles.")
 
+    
+    ### ALL TIME PERCENTILES
 
+    target_player_percentile = percentile_df.iloc[index_input]
+    
+    percentile_df_for_chart = target_player_percentile.to_frame(name="Percentile")
+    percentile_df_for_chart['Stat'] = percentile_df_for_chart.index  # Add the stat names as a column
+    
+    # Create the Altair bar chart with a custom order
+    chart = alt.Chart(percentile_df_for_chart).mark_bar().encode(
+        x=alt.X('Percentile:Q', title='Percentile'),
+        y=alt.Y('Stat:N', sort=custom_order, title='Stat'),
+        color=alt.Color('Percentile:Q', scale=alt.Scale(domain=[0, 100], range=['red', 'green']), legend=None),
+    ).properties(
+        title=f'Percentiles for {name_input} in {year_input}',
+        width=400
+    )
+    
+    # Display the chart using Streamlit
+    st.altair_chart(chart, use_container_width=False)
+
+
+    ### SIMILAR PLAYERS OUTPUTS
+    
+    
     if valid_indices:
         similar_player_info = non_transform_df.iloc[valid_indices].drop(columns=['player_id'])
         st.write(f"5 most similar players to {name_input} in {year_input}:")
