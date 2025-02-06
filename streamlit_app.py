@@ -40,6 +40,16 @@ def similarity(name_input, year_input, index_input):
     st.dataframe(target_player_info[['Full Name', 'year', *data.columns]].style.format(precision=2), hide_index=True)  # Now it works
 
     # Percentiles Bar Chart
+
+    df_percentiles = df.drop(columns=['player_id', 'Full Name', 'team_name', 'year']).rank(pct=True) * 100
+    player_percentiles = df_percentiles.iloc[index_input]
+
+    # Prepare the data for the bar chart (only percentiles for the current player)
+    player_percentiles_df = player_percentiles.reset_index()
+    player_percentiles_df.columns = ['Stat', 'Percentile']
+    
+    # Plot the bar chart
+    st.bar_chart(player_percentiles_df.set_index('Stat')['Percentile'], use_container_width=True)
     
     # df_percentiles = df.drop(columns=['player_id', 'Full Name', 'team_name', 'year']).rank(pct=True) * 100
     # player_percentiles = df_percentiles.iloc[index_input]
