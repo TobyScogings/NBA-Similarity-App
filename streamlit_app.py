@@ -41,24 +41,24 @@ def similarity(name_input, year_input, index_input):
 
     # Percentiles Bar Chart
     
-    df_percentiles = df.drop(columns=['player_id', 'Full Name', 'team_name', 'year']).rank(pct=True) * 100
-    player_percentiles = df_percentiles.iloc[index_input]
+    # df_percentiles = df.drop(columns=['player_id', 'Full Name', 'team_name', 'year']).rank(pct=True) * 100
+    # player_percentiles = df_percentiles.iloc[index_input]
 
-    # Plot bar chart for each stat
-    fig, ax = plt.subplots(figsize=(10, 6))  
+    # # Plot bar chart for each stat
+    # fig, ax = plt.subplots(figsize=(10, 6))  
 
-    # Plot the player's percentile rankings
-    player_percentiles.plot(kind='bar', ax=ax, colormap='viridis')
+    # # Plot the player's percentile rankings
+    # player_percentiles.plot(kind='bar', ax=ax, colormap='viridis')
     
-    # Graph Formatting
-    ax.set_title(f"{name_input}'s Percentile Rankings ({year_input})")
-    ax.set_xlabel('Stat')
-    ax.set_ylabel('Percentile (%)')
-    ax.set_xticklabels(player_percentiles.index, rotation=45)
-    ax.set_ylim(0, 100)  # Ensure percentiles stay within the range
+    # # Graph Formatting
+    # ax.set_title(f"{name_input}'s Percentile Rankings ({year_input})")
+    # ax.set_xlabel('Stat')
+    # ax.set_ylabel('Percentile (%)')
+    # ax.set_xticklabels(player_percentiles.index, rotation=45)
+    # ax.set_ylim(0, 100)  # Ensure percentiles stay within the range
     
-    # Display the plot in Streamlit
-    st.pyplot(fig)
+    # # Display the plot in Streamlit
+    # st.pyplot(fig)
 
     if valid_indices:
         similar_player_info = non_transform_df.iloc[valid_indices].drop(columns=['player_id'])
