@@ -43,34 +43,22 @@ def similarity(name_input, year_input, index_input):
     
     df_percentiles = df.drop(columns=['player_id', 'Full Name', 'team_name', 'year']).rank(pct=True) * 100
     player_percentiles = df_percentiles.iloc[index_input]
-    
+
     # Plot bar chart for each stat
-    fig, ax = plt.subplots(figsize=(4, 3))  # Smaller size for the plot
-    
+    fig, ax = plt.subplots(figsize=(10, 6))  
+
     # Plot the player's percentile rankings
     player_percentiles.plot(kind='bar', ax=ax, colormap='viridis')
     
     # Graph Formatting
-    ax.set_title('Percentiles', fontsize=8)  # Smaller title font size
-    ax.set_xlabel('Stats', fontsize=6)  # Smaller xlabel font size
-    ax.set_ylabel('Percentile (%)', fontsize=6)  # Smaller ylabel font size
-    ax.set_xticklabels(player_percentiles.index, rotation=45, fontsize=6)  # Smaller font for x-ticks
-    ax.set_yticklabels([f'{i}%' for i in range(0, 101, 20)], fontsize=6)  # Smaller font for y-ticks
+    ax.set_title(f"{name_input}'s Percentile Rankings ({year_input})")
+    ax.set_xlabel('Stat')
+    ax.set_ylabel('Percentile (%)')
+    ax.set_xticklabels(player_percentiles.index, rotation=45)
+    ax.set_ylim(0, 100)  # Ensure percentiles stay within the range
     
-    # Adjust subplots to fit everything in the smaller space
-    plt.subplots_adjust(left=0.2, right=0.8, top=0.9, bottom=0.2)
-    
-    # Set y-axis range to ensure percentiles stay within the range
-    ax.set_ylim(0, 100)
-    
-    # Use st.empty to ensure the plot occupies smaller space
-    st.empty()  # Clear any prior output in the Streamlit layout (optional)
-    
-    # Display the plot with a specific width limit
-    st.markdown(
-        f'<div style="width: 50%; margin: 0 auto;">{st.pyplot(fig)}</div>',
-        unsafe_allow_html=True
-    )
+    # Display the plot in Streamlit
+    st.pyplot(fig)
 
     if valid_indices:
         similar_player_info = non_transform_df.iloc[valid_indices].drop(columns=['player_id'])
