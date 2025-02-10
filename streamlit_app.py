@@ -230,21 +230,22 @@ Please now choose any other stats you would like to add in:""")
     # Loop to create checkboxes dynamically
     for key, label in optional_stats.items():
         if st.checkbox(label):  # Checkbox with stat name
+            if key not in st.session_state:
+                st.session_state[key] = 0.0
+                
             # Create a slider for input
-            slider_value = st.slider(f"Enter {label}", min_value=0.0, max_value=max(non_transform_df[label]), step=0.1, value=0.0)
-    
-            # Create a number input that syncs with the slider
-            number_input_value = st.number_input(f"Or enter the value for {label}", min_value=0.0, max_value=max(non_transform_df[label]), value=slider_value, step=0.1)
-    
-            # Ensure both inputs are synchronized
-            final_value = number_input_value if number_input_value != 0.0 else slider_value
-            
-            # Store the value of the selected stat
-            selected_stats[key] = final_value
+            slider_value = st.slider(f"Enter {label}", min_value=0.0, max_value=max(non_transform_df[label]), step=0.1, value=st.session_state[key])  # Slider input
+            number_input_value = st.number_input(f"Or enter the value for {label}", min_value=0.0, max_value=max(non_transform_df[label]), value=slider_value, step=0.1)  # Number input
+            if number_input_value != slider_value:
+                st.session_state[key] = number_input_value  # Update session state with number input value
+            else:
+                st.session_state[key] = slider_value
 
-    if selected_stats:
-        for label, value in selected_stats.items():
-            st.write(f"- **{label}**: {round(value,2)}")
+            st.session_state.selected_stats[key] = st.session_state[key]
+
+    if st.session_state.selected_stats:
+        for label, value in st.session_state.selected_stats.items():
+            st.write(f"- **{label}**: {round(value, 2)}")
     else:
         st.write("No additional stats selected.")
 
