@@ -205,82 +205,8 @@ def find_similar_players(user_input_df, df, stat_knn):
     return valid_indices
 
 
-    # ### SELECTED PLAYER CURRENT STATS
-    
-
-    # st.write(f"Target Player's Stats for {name_input} in {year_input}:")
-    # target_player_info = non_transform_df.iloc[index_input].to_frame().T
-    # st.dataframe(target_player_info[['Full Name', 'year', *data.columns]].style.format(precision=2), hide_index=True)
-
-    # col1, col2 = st.columns(2)
-    
-    # ### SELECTED SEASON PERCENTILES
-    
-    # with col1:
-    #     year_data = non_transform_df[non_transform_df['year'] == year_input]
-    #     percentile_df_year = year_data[data.columns].apply(lambda x: x.rank(pct=True) * 100)
-    
-    #     # ***Correct way to get the percentile***
-    #     target_player_row = non_transform_df[(non_transform_df['Full Name'] == name_input) & (non_transform_df['year'] == year_input)]
-    #     if not target_player_row.empty: #Check to make sure the row exists
-    #       target_player_index_year = target_player_row.index[0]
-    #       target_player_percentile = percentile_df_year.loc[target_player_index_year] #Use .loc to access the percentile by index
-    
-    #       percentile_df_for_chart = target_player_percentile.to_frame(name="Percentile")
-    #       percentile_df_for_chart['Stat'] = percentile_df_for_chart.index
-    
-    #       chart = alt.Chart(percentile_df_for_chart).mark_bar().encode(
-    #         x=alt.X('Percentile:Q', title='Percentile'),
-    #         y=alt.Y('Stat:N', sort=data.columns.tolist(), title='Stat'),
-    #         color=alt.Color('Percentile:Q', scale=alt.Scale(domain=[0, 100], range=['red', 'green']), legend=None),
-    #       ).properties(
-    #         title=f'Percentiles for {name_input} in {year_input}.',
-    #         width=600
-    #       )
-    #       st.altair_chart(chart, use_container_width=True)
-    #     else:
-    #       st.write(f"No data found for {name_input} in {year_input} to calculate percentiles.")
-
-    
-    # ### ALL TIME PERCENTILES
-    # if year_input != 2024 and df[(df['Full Name'] == name_input) & (df['year'] == 2024)].empty == False:
-    #     with col2:
-    #         year_data = non_transform_df[non_transform_df['year'] == 2024]
-    #         percentile_df_year = year_data[data.columns].apply(lambda x: x.rank(pct=True) * 100)
-        
-    #         # ***Correct way to get the percentile***
-    #         target_player_row = non_transform_df[(non_transform_df['Full Name'] == name_input) & (non_transform_df['year'] == 2024)]
-    #         if not target_player_row.empty: #Check to make sure the row exists
-    #           target_player_index_year = target_player_row.index[0]
-    #           target_player_percentile = percentile_df_year.loc[target_player_index_year] #Use .loc to access the percentile by index
-        
-    #           percentile_df_for_chart = target_player_percentile.to_frame(name="Percentile")
-    #           percentile_df_for_chart['Stat'] = percentile_df_for_chart.index
-        
-    #           chart = alt.Chart(percentile_df_for_chart).mark_bar().encode(
-    #             x=alt.X('Percentile:Q', title='Percentile'),
-    #             y=alt.Y('Stat:N', sort=data.columns.tolist(), title='Stat'),
-    #             color=alt.Color('Percentile:Q', scale=alt.Scale(domain=[0, 100], range=['red', 'green']), legend=None),
-    #           ).properties(
-    #             title=f'Percentiles for {name_input} this season.',
-    #             width=600
-    #           )
-    #           st.altair_chart(chart, use_container_width=True)
-    #         else:
-    #           st.write(f"No data found for {name_input} in {year_input} to calculate percentiles.")
-
-
-    # ### SIMILAR PLAYERS OUTPUTS
-    
-    
-    # if valid_indices:
-    #     similar_player_info = non_transform_df.iloc[valid_indices].drop(columns=['player_id'])
-    #     st.write(f"5 most similar players to {name_input} in {year_input}:")
-    #     st.dataframe(similar_player_info.style.format(precision=2), hide_index=True)
-    # else:
-    #     st.write(f"No similar players found for {name_input} in {year_input}")
-
 ### Player Comparison Option
+
 
 def player_comp(df):
     # Year selection
@@ -377,6 +303,11 @@ Blocks: {blocks}""")
     
             # Convert the dictionary to a DataFrame
             user_input_df = pd.DataFrame([input_data])
+
+            user_input_df.loc[:, filled_columns] = user_input_df[filled_columns].apply(lambda x: np.log(x + 0.0001))
+         
+            scaler = StandardScaler()
+            user_input_df[filled_columns] = scaler.fit_transform(user_input_df[filled_columns])
 
             stat_similarity(filled_columns, user_input_df)
 
