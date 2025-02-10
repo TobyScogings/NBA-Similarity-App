@@ -192,6 +192,52 @@ def player_comp(df):
     else:
         st.write("No years available in the data.")
 
+def stat_comp(df):
+    
+    st.subheader("Enter Your Custom Statline")
+
+    # Mandatory stat entries
+    points = st.number_input("Points Per Game", min_value=0.0, max_value = max(non_transform_df['Points']), step=0.01)
+    assists = st.number_input("Assists Per Game", min_value=0.0, max_value = max(non_transform_df['Assists']), step=0.01)
+    rebounds = st.number_input("Rebounds Per Game", min_value=0.0, max_value = max(non_transform_df['Rebounds']), step=0.01)
+    steals = st.number_input("Steals Per Game", min_value=0.0, max_value = max(non_transform_df['Steals']), step=0.01)
+    blocks = st.number_input("Blocks Per Game", min_value=0.0, max_value = max(non_transform_df['Blocks']), step=0.01)
+
+    st.write(f"""Your stats are:
+
+Points: {points}
+Assists: {assists}
+Rebounds: {rebounds}
+Steals: {steals}
+Blocks: {blocks}
+
+Please now choose any other stats you would like to add in:""")
+
+    optional_stats = {'min': 'Minutes',
+    'fga': 'FGA',
+    'fg%': 'FG%',
+    'tpa': '3PA',
+    'tp%': '3P%',
+    'fta': 'FTA',
+    'ft%': 'FT%',
+    'defReb': 'Def. Rebounds',
+    'offReb': 'Off. Rebounds',
+    'pFouls': 'Fouls',
+    'turnovers': 'Turnovers'}
+
+    selected_stats = {}
+    
+    # Loop to create checkboxes dynamically
+    for key, label in optional_stats.items():
+        if st.checkbox(label):  # Checkbox with stat name
+            selected_stats[key] = st.number_input(f"Enter {label}", min_value=0.0, max_value = max(non_transform_df[label]), step=0.1)
+
+    if selected_optional_stats:
+        for label, value in selected_optional_stats.items():
+            st.write(f"- **{label}**: {value}")
+        else:
+            st.write("No additional stats selected.")
+
 
 ### --- Streamlit UI ---
 
