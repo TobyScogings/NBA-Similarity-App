@@ -301,11 +301,18 @@ Blocks: {blocks}""")
                 input_data[optional_stats[key]] = value
 
             filled_columns = [col for col, val in input_data.items() if val != 0.0]
+            transform_input = filled_columns
+            if 'FG%' in filled_columns:
+                transform_input.remove('3P%')
+            if '3P%' in filled_columns:
+                transform_input.remove('3P%')
+            if 'FT%' in filled_columns:
+                transform_input.remove('3P%')
     
             # Convert the dictionary to a DataFrame
             user_input_df = pd.DataFrame([input_data])
 
-            user_input_df.loc[:, filled_columns] = user_input_df[filled_columns].apply(lambda x: np.log(x + 0.0001))
+            user_input_df.loc[:, transform_input] = user_input_df[transform_input].apply(lambda x: np.log(x + 0.0001))
          
             scaler = StandardScaler()
             user_input_df[filled_columns] = scaler.fit_transform(user_input_df[filled_columns])
