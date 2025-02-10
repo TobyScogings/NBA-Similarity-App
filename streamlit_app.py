@@ -310,13 +310,13 @@ Blocks: {blocks}""")
                 transform_input.remove('FT%')
     
             # Convert the dictionary to a DataFrame
-            user_input_df = pd.DataFrame([input_data])
+            input_df = pd.DataFrame([input_data])
 
-            user_input_df.loc[:, transform_input] = user_input_df[transform_input].apply(lambda x: np.log(x + 0.0001))
+            input_df.loc[:, transform_input] = input_df[transform_input].apply(lambda x: np.log(x + 0.0001))
          
             scaler = StandardScaler()
-            scaled_user_input = scaler.fit_transform(user_input_df)
-            user_input_df = pd.DataFrame(scaled_user_input, columns=user_input_df.columns)
+            scaled_user_input = scaler.fit_transform(input_df)
+            user_input_df = pd.DataFrame(scaled_user_input, columns=input_df.columns)
 
             stat_similarity(filled_columns, user_input_df)
 
