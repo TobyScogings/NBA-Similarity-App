@@ -356,6 +356,9 @@ Blocks: {blocks}""")
             # Add selected optional stats to the dictionary
             for key, value in selected_stats.items():
                 input_data[optional_stats[key]] = value
+
+            filled_columns = [col for col, val in input_data.items() if val != 0.0]
+            st.write(filled_columns)
     
             # Convert the dictionary to a DataFrame
             user_input_df = pd.DataFrame([input_data])
