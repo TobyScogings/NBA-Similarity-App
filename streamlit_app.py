@@ -250,15 +250,22 @@ st.write("""This app allows users to compare player stats and find similar playe
 
 Future updates include the ability to compare custom statlines, standardise stats per 36 minutes and more!""")
 
-choice_col1, choice_col2 = st.columns(2) # Create system choice buttons
+if "active_feature" not in st.session_state:
+    st.session_state.active_feature = None
+
+# Create system choice buttons
+choice_col1, choice_col2 = st.columns(2)
 
 with choice_col1:
-    player_selected = st.button("🏀 Player Comparison", key="player_button")
+    if st.button("🏀 Player Comparison", key="player_button"):
+        st.session_state.active_feature = "player_comp"
 
 with choice_col2:
-    stat_selected = st.button("📊 Statline Comparison", key="stat_button")
+    if st.button("📊 Statline Comparison", key="stat_button"):
+        st.session_state.active_feature = "stat_comp"
 
-if player_selected:
+# Check session state and run the selected function
+if st.session_state.active_feature == "player_comp":
     player_comp(df)
-if stat_selected:
+elif st.session_state.active_feature == "stat_comp":
     stat_comp(non_transform_df)
