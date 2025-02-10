@@ -166,10 +166,13 @@ knn = NearestNeighbors(n_neighbors=20, metric='euclidean')
 knn.fit(data)
 
 
-### Statline Similarity Function
-def stat_similarity(filled_columns, user_input_df):
+def stat_similarity(filled_columns, df, non_transform_df, user_input_df):
     # Create a DataFrame using only the columns that were filled in by the user
     comp_df = df[filled_columns]
+
+    # Ensure that the columns in user_input_df match the columns in comp_df
+    # Reindex user_input_df to match the order of columns in comp_df
+    user_input_df = user_input_df[filled_columns]
 
     # Initialize Nearest Neighbors model
     stat_knn = NearestNeighbors(n_neighbors=20, metric='euclidean')
@@ -178,7 +181,7 @@ def stat_similarity(filled_columns, user_input_df):
     stat_knn.fit(comp_df)
     
     # Now that the model is fitted, find the most similar players
-    stat_similar_indices = find_similar_players(user_input_df, df, stat_knn)
+    stat_similar_indices = find_similar_players(user_input_df, stat_knn)
 
     if stat_similar_indices:
         stat_similar_player = non_transform_df.iloc[stat_similar_indices].drop(columns=['player_id'])
@@ -187,7 +190,7 @@ def stat_similarity(filled_columns, user_input_df):
     else:
         st.write(f"No similar players to your custom statline found.")
 
-def find_similar_players(user_input_df, df, stat_knn):
+def find_similar_players(user_input_df, stat_knn):
     # Get distances and indices for the nearest neighbors
     distances, indices = stat_knn.kneighbors(user_input_df)
 
@@ -318,7 +321,7 @@ Blocks: {blocks}""")
             scaled_user_input = scaler.fit_transform(input_df)
             user_input_df = pd.DataFrame(scaled_user_input, columns=input_df.columns)
 
-            stat_similarity(filled_columns, user_input_df)
+            stat_similarity(filled_columns, df, non_transform_df, user_input_df)
 
 
 
