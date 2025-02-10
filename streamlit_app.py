@@ -192,7 +192,7 @@ def player_comp(df):
     else:
         st.write("No years available in the data.")
 
-def stat_comp(df):
+def stat_comp(non_transform_df):
     
     st.subheader("Enter Your Custom Statline")
 
@@ -261,4 +261,4 @@ with choice_col2:
 if player_selected:
     player_comp(df)
 if stat_selected:
-    st.write("Statline Comparison Selected! This feature is a work in progress. For now, please return to player comparison!")
+    stat_comp(non_transform_df)
