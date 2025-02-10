@@ -4,6 +4,7 @@ import streamlit as st
 import pandas as pd, numpy as np
 from sklearn.neighbors import NearestNeighbors
 import altair as alt
+from sklearn.preprocessing import StandardScaler
 
 st.set_page_config(layout="wide")
 
