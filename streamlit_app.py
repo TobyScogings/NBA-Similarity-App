@@ -381,6 +381,8 @@ Blocks: {blocks}""")
             stat_similarity(filled_columns, user_input_df)
 
 
+
+
 ### --- Streamlit UI ---
 
 
