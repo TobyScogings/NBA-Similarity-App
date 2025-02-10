@@ -234,7 +234,7 @@ Please now choose any other stats you would like to add in:""")
 
     if selected_stats:
         for label, value in selected_stats.items():
-            st.write(f"- **{label}**: {value}")
+            st.write(f"- **{label}**: {round(value,2)}")
         else:
             st.write("No additional stats selected.")
 
