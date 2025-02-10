@@ -308,57 +308,61 @@ Points: {points}
 Assists: {assists}
 Rebounds: {rebounds}
 Steals: {steals}
-Blocks: {blocks}
-
-Please now choose any other stats you would like to add in:""")
+Blocks: {blocks}""")
 
     # Optional stat entries
-
-    optional_stats = {'min': 'Minutes',
-    'fga': 'FGA',
-    'fg%': 'FG%',
-    'tpa': '3PA',
-    'tp%': '3P%',
-    'fta': 'FTA',
-    'ft%': 'FT%',
-    'defReb': 'Def. Rebounds',
-    'offReb': 'Off. Rebounds',
-    'pFouls': 'Fouls',
-    'turnovers': 'Turnovers'}
-
-    selected_stats = {}
-    
-    # Loop to create checkboxes dynamically
-    for key, label in optional_stats.items():
-        if st.checkbox(label):  # Checkbox with stat name
-            selected_stats[key] = st.slider(f"Enter {label}", min_value=0.0, max_value=max(non_transform_df[label]), step=0.1, value=0.0)
-
-    if selected_stats:
-        for label, value in selected_stats.items():
-            st.write(f"- **{label}**: {round(value,2)}")
+    if min(points, assists, rebounds, steals, blocks) == 0:
+        st.write("You must first set your values for these 5 key stats")
     else:
-        st.write("No additional stats selected.")
-
-    if st.button("Convert to DataFrame"):
-        # Collect all input data into a dictionary
-        input_data = {
-            'Points': points,
-            'Assists': assists,
-            'Rebounds': rebounds,
-            'Steals': steals,
-            'Blocks': blocks
-        }
-
-        # Add selected optional stats to the dictionary
-        for key, value in selected_stats.items():
-            input_data[optional_stats[key]] = value
-
-        # Convert the dictionary to a DataFrame
-        user_input_df = pd.DataFrame([input_data])
-
-        # Display the dataframe
-        st.write("Your custom statline has been converted to a DataFrame:")
-        st.dataframe(user_input_df)
+        st.write("Please now choose any other stats you would like to add in:")
+        
+        optional_stats = {'min': 'Minutes',
+        'fga': 'FGA',
+        'fg%': 'FG%',
+        'tpa': '3PA',
+        'tp%': '3P%',
+        'fta': 'FTA',
+        'ft%': 'FT%',
+        'defReb': 'Def. Rebounds',
+        'offReb': 'Off. Rebounds',
+        'pFouls': 'Fouls',
+        'turnovers': 'Turnovers'}
+    
+        selected_stats = {}
+        
+        # Loop to create checkboxes dynamically
+        for key, label in optional_stats.items():
+            if st.checkbox(label):  # Checkbox with stat name
+                selected_stats[key] = st.slider(f"Enter {label}", min_value=0.0, max_value=max(non_transform_df[label]), step=0.1, value=0.0)
+    
+        if selected_stats:
+            for label, value in selected_stats.items():
+                st.write(f"- **{label}**: {round(value,2)}")
+        else:
+            st.write("No additional stats selected.")
+    
+        
+        
+        if st.button("Convert to DataFrame"):
+            # Collect all input data into a dictionary
+            input_data = {
+                'Points': points,
+                'Assists': assists,
+                'Rebounds': rebounds,
+                'Steals': steals,
+                'Blocks': blocks
+            }
+    
+            # Add selected optional stats to the dictionary
+            for key, value in selected_stats.items():
+                input_data[optional_stats[key]] = value
+    
+            # Convert the dictionary to a DataFrame
+            user_input_df = pd.DataFrame([input_data])
+    
+            # Display the dataframe
+            st.write("Your custom statline has been converted to a DataFrame:")
+            st.dataframe(user_input_df)
 
 
 ### --- Streamlit UI ---
