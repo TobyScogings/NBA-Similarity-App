@@ -1,8 +1,6 @@
-# 🎈 Blank app template
+# 🏀 NBA Player Comparison Tool 🏀 
 
-A simple Streamlit app template for you to modify!
-
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://blank-app-template.streamlit.app/)
+Data Analytics training project converted into personal development passion project. An app built to allow for comparison of NBA players' seasons since 2020
 
 ### How to run it on your own machine
 
@@ -17,3 +15,11 @@ A simple Streamlit app template for you to modify!
    ```
    $ streamlit run streamlit_app.py
    ```
+### Alternatively, access the website [here](https://nbasimilarity.streamlit.app/)
+
+# Future Changes
+
+- New input system - dynamic stat inputs for hypothetical comparison
+- Improved output comparisons
+- Per minute or per 36 minutes stat option
+- Improved system explanation on site
