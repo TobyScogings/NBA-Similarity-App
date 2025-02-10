@@ -117,7 +117,7 @@ def similarity(name_input, year_input, index_input):
             title=f'Percentiles for {name_input} in {year_input}.',
             width=600
           )
-          st.altair_chart(chart, use_container_width=False)
+          st.altair_chart(chart, use_container_width=True)
         else:
           st.write(f"No data found for {name_input} in {year_input} to calculate percentiles.")
 
@@ -145,7 +145,7 @@ def similarity(name_input, year_input, index_input):
                 title=f'Percentiles for {name_input} this season.',
                 width=600
               )
-              st.altair_chart(chart, use_container_width=False)
+              st.altair_chart(chart, use_container_width=True)
             else:
               st.write(f"No data found for {name_input} in {year_input} to calculate percentiles.")
 
