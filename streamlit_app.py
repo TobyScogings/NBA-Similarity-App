@@ -5,6 +5,18 @@ import pandas as pd, numpy as np
 from sklearn.neighbors import NearestNeighbors
 import altair as alt
 
+st.markdown(
+    """
+    <style>
+    .main {
+        max-width: 900px; /* Adjust this value as needed */
+        margin: auto;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 #st.set_page_config(layout="wide")
 
 # Load data (make sure these paths are correct)
