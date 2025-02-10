@@ -197,11 +197,11 @@ def stat_comp(non_transform_df):
     st.subheader("Enter Your Custom Statline")
 
     # Mandatory stat entries
-    points = st.number_input("Points Per Game", min_value=0.0, max_value = max(non_transform_df['Points']), step=0.01)
-    assists = st.number_input("Assists Per Game", min_value=0.0, max_value = max(non_transform_df['Assists']), step=0.01)
-    rebounds = st.number_input("Rebounds Per Game", min_value=0.0, max_value = max(non_transform_df['Rebounds']), step=0.01)
-    steals = st.number_input("Steals Per Game", min_value=0.0, max_value = max(non_transform_df['Steals']), step=0.01)
-    blocks = st.number_input("Blocks Per Game", min_value=0.0, max_value = max(non_transform_df['Blocks']), step=0.01)
+    points = st.slider("Points Per Game", min_value=0.0, max_value = max(non_transform_df['Points']), step=0.01)
+    assists = st.slider("Assists Per Game", min_value=0.0, max_value = max(non_transform_df['Assists']), step=0.01)
+    rebounds = st.slider("Rebounds Per Game", min_value=0.0, max_value = max(non_transform_df['Rebounds']), step=0.01)
+    steals = st.slider("Steals Per Game", min_value=0.0, max_value = max(non_transform_df['Steals']), step=0.01)
+    blocks = st.slider("Blocks Per Game", min_value=0.0, max_value = max(non_transform_df['Blocks']), step=0.01)
 
     st.write(f"""Your stats are:
 
