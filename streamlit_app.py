@@ -238,7 +238,7 @@ Please now choose any other stats you would like to add in:""")
         for label, value in selected_stats.items():
             st.write(f"- **{label}**: {round(value,2)}")
     else:
-        st.write("No additional stats selected.")    st.session_state.selected_stats = {}
+        st.write("No additional stats selected.")
 
 
 ### --- Streamlit UI ---
