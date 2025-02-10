@@ -261,8 +261,8 @@ def stat_similarity(### STATLINE DATAFRAME ###):
         st.write(f"No similar players found for {name_input} in {year_input}")
 
 # Model Initialization
-knn = NearestNeighbors(n_neighbors=20, metric='euclidean')
-knn.fit(### MAKE THIS COLUMNS THAT HAVE BEEN INPUTTED ###)
+# knn = NearestNeighbors(n_neighbors=20, metric='euclidean')
+# knn.fit(### MAKE THIS COLUMNS THAT HAVE BEEN INPUTTED ###)
 
 ### Player Comparison Option
 
