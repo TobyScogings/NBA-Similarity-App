@@ -175,8 +175,10 @@ with choice_col1:
 with choice_col2:
     stat_selected = st.button("📊 Statline Comparison", key="stat_button")
 
-st.write(st.session_state.player_button)
-st.write(st.session_state.stat_button)
+if player_selected:
+    st.write("Player Comparison Selected!")
+if stat_selected:
+    st.write("Statline Comparison Selected!")
 
 
 ### Player Comparison Option
