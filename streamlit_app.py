@@ -232,7 +232,7 @@ Please now choose any other stats you would like to add in:""")
         if st.checkbox(label):  # Checkbox with stat name
             selected_stats[key] = st.number_input(f"Enter {label}", min_value=0.0, max_value = max(non_transform_df[label]), step=0.1)
 
-    if selected_optional_stats:
+    if selected_stats:
         for label, value in selected_optional_stats.items():
             st.write(f"- **{label}**: {value}")
         else:
