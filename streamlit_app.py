@@ -316,7 +316,7 @@ Blocks: {blocks}""")
          
             scaler = StandardScaler()
             scaled_user_input = scaler.fit_transform(user_input_df)
-            user_input_df_scaled = pd.DataFrame(scaled_user_input, columns=user_input_df.columns)
+            user_input_df = pd.DataFrame(scaled_user_input, columns=user_input_df.columns)
 
             stat_similarity(filled_columns, user_input_df)
 
