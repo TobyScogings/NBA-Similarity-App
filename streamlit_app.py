@@ -164,22 +164,6 @@ def similarity(name_input, year_input, index_input):
 knn = NearestNeighbors(n_neighbors=20, metric='euclidean')
 knn.fit(data)
 
-# --- Streamlit UI ---
-st.title("Player Similarity App")  # Add a title
-
-choice_col1, choice_col2 = st.columns(2)
-
-with choice_col1:
-    player_selected = st.button("🏀 Player Comparison", key="player_button")
-
-with choice_col2:
-    stat_selected = st.button("📊 Statline Comparison", key="stat_button")
-
-if player_selected:
-    st.write("Player Comparison Selected!")
-if stat_selected:
-    st.write("Statline Comparison Selected!")
-
 
 ### Player Comparison Option
 
@@ -208,4 +192,21 @@ def player_comp(df):
     else:
         st.write("No years available in the data.")
 
-player_comp(df)
+
+### --- Streamlit UI ---
+
+
+st.title("Player Similarity App")  # Title
+
+choice_col1, choice_col2 = st.columns(2) # Create system choice buttons
+
+with choice_col1:
+    player_selected = st.button("🏀 Player Comparison", key="player_button")
+
+with choice_col2:
+    stat_selected = st.button("📊 Statline Comparison", key="stat_button")
+
+if player_selected:
+    player_comp(df)
+if stat_selected:
+    st.write("Statline Comparison Selected! This feature is a work in progress. For now, please return to player comparison!")
