@@ -303,11 +303,11 @@ Blocks: {blocks}""")
             filled_columns = [col for col, val in input_data.items() if val != 0.0]
             transform_input = filled_columns
             if 'FG%' in filled_columns:
-                transform_input.remove('3P%')
+                transform_input.remove('FG%')
             if '3P%' in filled_columns:
                 transform_input.remove('3P%')
             if 'FT%' in filled_columns:
-                transform_input.remove('3P%')
+                transform_input.remove('FT%')
     
             # Convert the dictionary to a DataFrame
             user_input_df = pd.DataFrame([input_data])
