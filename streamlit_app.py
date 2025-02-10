@@ -9,7 +9,7 @@ st.markdown(
     """
     <style>
     .main {
-        max-width: 900px; /* Adjust this value as needed */
+        max-width: 1500px; /* Adjust this value as needed */
         margin: auto;
     }
     </style>
