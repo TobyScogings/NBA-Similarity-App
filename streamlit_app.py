@@ -177,14 +177,14 @@ def stat_similarity(filled_columns, user_input_df):
     stat_knn.fit(comp_df)
     
     # Now that the model is fitted, find the most similar players
-    similar_players_indices = find_similar_players(user_input_df, df, stat_knn)
+    stat_similar_indices = find_similar_players(user_input_df, df, stat_knn)
 
-    # Get the names of the top 5 similar players
-    similar_players = df.iloc[similar_players_indices]['Full Name']
-    
-    # Display the top 5 similar players
-    st.write("The top 5 most similar players are:")
-    st.write(similar_players)
+    if stat_similar_indices:
+        stat_similar_player = non_transform_df.iloc[stat_similar_indices].drop(columns=['player_id'])
+        st.write(f"5 most similar players to your custom statline:")
+        st.dataframe(stat_similar_player.style.format(precision=2), hide_index=True)
+    else:
+        st.write(f"No similar players to your custom statline found.")
 
 def find_similar_players(user_input_df, df, stat_knn):
     # Get distances and indices for the nearest neighbors
