@@ -315,7 +315,7 @@ Blocks: {blocks}""")
             user_input_df.loc[:, transform_input] = user_input_df[transform_input].apply(lambda x: np.log(x + 0.0001))
          
             scaler = StandardScaler()
-            user_input_df[filled_columns] = scaler.fit_transform(user_input_df[filled_columns])
+            user_input_df = scaler.fit_transform(user_input_df)
 
             stat_similarity(filled_columns, user_input_df)
 
