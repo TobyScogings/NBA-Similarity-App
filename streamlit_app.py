@@ -5,7 +5,7 @@ import pandas as pd, numpy as np
 from sklearn.neighbors import NearestNeighbors
 import altair as alt
 
-st.set_page_config(layout="wide")
+#st.set_page_config(layout="wide")
 
 # Load data (make sure these paths are correct)
 df = pd.read_csv("model_data.csv")
@@ -196,7 +196,7 @@ def player_comp(df):
 ### --- Streamlit UI ---
 
 
-st.title("Player Similarity App")  # Title
+st.title("NBA Player Similarity App")  # Title
 
 st.subheader("What does this app do?")
 
