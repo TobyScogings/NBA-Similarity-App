@@ -312,11 +312,11 @@ def stat_comp(non_transform_df):
     st.subheader("Enter Your Custom Statline")
 
     # Mandatory stat entries
-    points = st.slider("Points Per Game", min_value=0.0, max_value = max(non_transform_df['Points']), step=0.01)
-    assists = st.slider("Assists Per Game", min_value=0.0, max_value = max(non_transform_df['Assists']), step=0.01)
-    rebounds = st.slider("Rebounds Per Game", min_value=0.0, max_value = max(non_transform_df['Rebounds']), step=0.01)
-    steals = st.slider("Steals Per Game", min_value=0.0, max_value = max(non_transform_df['Steals']), step=0.01)
-    blocks = st.slider("Blocks Per Game", min_value=0.0, max_value = max(non_transform_df['Blocks']), step=0.01)
+    points = st.slider("Points Per Game", min_value=0.01, max_value = max(non_transform_df['Points']), step=0.01)
+    assists = st.slider("Assists Per Game", min_value=0.01, max_value = max(non_transform_df['Assists']), step=0.01)
+    rebounds = st.slider("Rebounds Per Game", min_value=0.01, max_value = max(non_transform_df['Rebounds']), step=0.01)
+    steals = st.slider("Steals Per Game", min_value=0.01, max_value = max(non_transform_df['Steals']), step=0.01)
+    blocks = st.slider("Blocks Per Game", min_value=0.01, max_value = max(non_transform_df['Blocks']), step=0.01)
 
     st.write(f"""Your stats are:
 
@@ -349,7 +349,7 @@ Blocks: {blocks}""")
         # Loop to create checkboxes dynamically
         for key, label in optional_stats.items():
             if st.checkbox(label):  # Checkbox with stat name
-                selected_stats[key] = st.slider(f"Enter {label}", min_value=0.0, max_value=max(non_transform_df[label]), step=0.1, value=0.0)
+                selected_stats[key] = st.slider(f"Enter {label}", min_value=0.01, max_value=max(non_transform_df[label]), step=0.1, value=0.0)
     
         if selected_stats:
             for label, value in selected_stats.items():
