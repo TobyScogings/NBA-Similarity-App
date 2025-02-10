@@ -238,46 +238,6 @@ Please now choose any other stats you would like to add in:""")
     else:
         st.write("No additional stats selected.")    st.session_state.selected_stats = {}
 
-# Loop to create checkboxes dynamically
-for key, label in optional_stats.items():
-    if st.checkbox(label):  # Checkbox with stat name
-        # Create a slider for input, using session state to sync it
-        if key not in st.session_state:
-            st.session_state[key] = 0.0  # Initialize if not already in session state
-
-        slider_value = st.slider(
-            f"Enter {label}", 
-            min_value=0.0, 
-            max_value=max(non_transform_df[label]), 
-            step=0.1, 
-            value=st.session_state[key]  # Use session state value
-        )
-
-        # Create a number input that syncs with the slider
-        number_input_value = st.number_input(
-            f"Or enter the value for {label}", 
-            min_value=0.0, 
-            max_value=max(non_transform_df[label]), 
-            value=slider_value,  # Start with slider value
-            step=0.1
-        )
-
-        # Sync the slider and number input: whichever is modified first updates both
-        if number_input_value != slider_value:
-            st.session_state[key] = number_input_value  # Update session state with number input value
-        else:
-            st.session_state[key] = slider_value  # Keep session state value synced with the slider
-        
-        # Store the final selected value for the stat
-        st.session_state.selected_stats[key] = st.session_state[key]
-
-# Display the stats
-if st.session_state.selected_stats:
-    for label, value in st.session_state.selected_stats.items():
-        st.write(f"- **{label}**: {round(value, 2)}")
-else:
-    st.write("No additional stats selected.")
-
 
 ### --- Streamlit UI ---
 
