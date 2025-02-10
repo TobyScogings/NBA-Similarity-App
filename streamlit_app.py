@@ -229,9 +229,18 @@ Please now choose any other stats you would like to add in:""")
     
     # Loop to create checkboxes dynamically
     for key, label in optional_stats.items():
-        if st.checkbox(label):  # Checkbox with stat name
-            selected_stats[key] = st.slider(f"Enter {label}", min_value=0.0, max_value=max(non_transform_df[label]), step=0.1, value=0.0  # Set initial value to 0.0
-        )
+    if st.checkbox(label):  # Checkbox with stat name
+        # Create a slider for input
+        slider_value = st.slider(f"Enter {label}", min_value=0.0, max_value=max(non_transform_df[label]), step=0.1, value=0.0)
+
+        # Create a number input that syncs with the slider
+        number_input_value = st.number_input(f"Or enter the value for {label}", min_value=0.0, max_value=max(non_transform_df[label]), value=slider_value, step=0.1)
+
+        # Ensure both inputs are synchronized
+        final_value = number_input_value if number_input_value != 0.0 else slider_value
+        
+        # Store the value of the selected stat
+        selected_stats[key] = final_value
 
     if selected_stats:
         for label, value in selected_stats.items():
