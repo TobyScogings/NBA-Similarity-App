@@ -198,6 +198,8 @@ def player_comp(df):
 
 st.title("Player Similarity App")  # Title
 
+st.subheader("What does this app do?")
+
 choice_col1, choice_col2 = st.columns(2) # Create system choice buttons
 
 with choice_col1:
