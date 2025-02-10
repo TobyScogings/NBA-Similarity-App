@@ -213,6 +213,8 @@ Blocks: {blocks}
 
 Please now choose any other stats you would like to add in:""")
 
+    # Optional stat entries
+
     optional_stats = {'min': 'Minutes',
     'fga': 'FGA',
     'fg%': 'FG%',
