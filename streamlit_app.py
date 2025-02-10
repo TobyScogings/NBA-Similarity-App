@@ -169,10 +169,10 @@ st.title("Player Similarity App")  # Add a title
 
 choice_col1, choice_col2 = st.columns(2)
 
-with col1:
+with choice_col1:
     player_selected = st.button("🏀 Player Comparison", key="player_button")
 
-with col2:
+with choice_col2:
     stat_selected = st.button("📊 Statline Comparison", key="stat_button")
 
 
