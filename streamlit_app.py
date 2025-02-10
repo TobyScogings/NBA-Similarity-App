@@ -200,6 +200,10 @@ st.title("Player Similarity App")  # Title
 
 st.subheader("What does this app do?")
 
+st.write("""This app allows users to compare player stats and find similar players. Current functionality allows users to select any player that has min. 1 second of playing time since 2020/21 and find their 5 most similar players. First, select the year to compare and then the desired player.
+
+Future updates include the ability to compare custom statlines, standardise stats per 36 minutes and more!""")
+
 choice_col1, choice_col2 = st.columns(2) # Create system choice buttons
 
 with choice_col1:
