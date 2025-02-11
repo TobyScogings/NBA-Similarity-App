@@ -252,19 +252,11 @@ def stat_comp(non_transform_df):
     steals = st.slider("Steals Per Game", min_value=0.01, max_value = max(non_transform_df['Steals']), step=0.01)
     blocks = st.slider("Blocks Per Game", min_value=0.01, max_value = max(non_transform_df['Blocks']), step=0.01)
 
-    st.write(f"""Your stats are:
-
-Points: {points}
-Assists: {assists}
-Rebounds: {rebounds}
-Steals: {steals}
-Blocks: {blocks}""")
-
     # Optional stat entries
     if min(points, assists, rebounds, steals, blocks) == 0:
         st.write("You must first set your values for these 5 key stats")
     else:
-        st.write("Please now choose any other stats you would like to add in:")
+        st.subheader(f"\nPlease now choose any other stats you would like to add in:\n")
         
         optional_stats = {'min': 'Minutes',
         'fga': 'FGA',
@@ -285,15 +277,15 @@ Blocks: {blocks}""")
             if st.checkbox(label):  # Checkbox with stat name
                 selected_stats[key] = st.slider(f"Enter {label}", min_value=0.01, max_value=max(non_transform_df[label]), step=0.1, value=0.0)
     
-        if selected_stats:
-            for label, value in selected_stats.items():
-                st.write(f"- **{label}**: {round(value,2)}")
-        else:
-            st.write("No additional stats selected.")
+        # if selected_stats:
+        #     for label, value in selected_stats.items():
+        #         st.write(f"- **{label}**: {round(value,2)}")
+        # else:
+        #     st.write("No additional stats selected.")
     
         
         
-        if st.button("Convert to DataFrame"):
+        if st.button("Find my comparisons!"):
             # Collect all input data into a dictionary
             input_data = {
                 'Points': points,
@@ -307,9 +299,13 @@ Blocks: {blocks}""")
             for key, value in selected_stats.items():
                 input_data[optional_stats[key]] = value
 
-###############################################################################################################
+            input_df = pd.DataFrame([input_data])
 
-            # Input Log Transformation:
+            st.subheader("Your stat inputs are:")
+            st.write(input_df)
+
+###############################################################################################################  --- Input Log Transformation ---
+
             # Define the columns the user has selected (all non-zero columns)
             # Remove percentage columns
             # Apply log transformation
@@ -324,15 +320,14 @@ Blocks: {blocks}""")
                 transform_input.remove('3P%')
             if 'FT%' in filled_columns:
                 transform_input.remove('FT%')
-    
-            # Convert the dictionary to a DataFrame
-            input_df = pd.DataFrame([input_data])
+
+
 
             input_df[transform_input] = input_df[transform_input].apply(lambda x: np.log(x + 0.0001))
 
 
-################################################################################################################
-
+###############################################################################################################  --- Input Scaling ---
+            
             # Columns to scale: filled_columns
             # Create extract of non_transform_df with cols from filled_columns
             # Log our original data in order to define the scaler for our singular row
@@ -365,10 +360,10 @@ Blocks: {blocks}""")
 
 
 
-### --- Streamlit UI ---
+################################################################################################################ --- Streamlit UI ---
 
 
-st.title("NBA Player Similarity App")  # Title
+st.title("NBA Player Similarity App")  
 
 st.subheader("What does this app do?")
 
