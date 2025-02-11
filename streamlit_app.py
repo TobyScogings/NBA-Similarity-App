@@ -316,8 +316,6 @@ Blocks: {blocks}""")
             # This all follows the method used in data preparation
             
             filled_columns = [col for col, val in input_data.items() if val != 0.0]
-
-            st.write(filled_columns)
             
             transform_input = filled_columns.copy()
             if 'FG%' in filled_columns:
@@ -349,8 +347,6 @@ Blocks: {blocks}""")
 
             scaler = StandardScaler()
             df_scaled[filled_columns] = scaler.fit_transform(df_logged[filled_columns])
-
-            st.write(filled_columns)
 
             input_df_scaled = input_df.copy()
             input_df_scaled[filled_columns] = scaler.transform(input_df[filled_columns])
