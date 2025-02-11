@@ -199,7 +199,7 @@ def find_similar_players(user_input_df, stat_knn, non_transform_df):
 
     # Loop through the indices of the nearest neighbors
     for i in indices[0]:
-        player_name = non_transform_df.iloc[i]['player_name']  # Get player's name
+        player_name = non_transform_df.iloc[i]['Full Name']  # Get player's name
 
         if player_name not in seen_players:  # Ensure uniqueness
             seen_players.add(player_name)
