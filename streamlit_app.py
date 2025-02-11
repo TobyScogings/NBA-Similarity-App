@@ -393,6 +393,7 @@ Future updates include the ability to compare custom statlines, standardise stat
 with st.sidebar:
     st.subheader("NBA Comparison Tool")
     st.markdown("This app has been created using NBA player statistics since the 2020/2021 season. This app allows you to directly compare actual seasonal averages or to find similar statistical seasons to custom statline inputs. Similarities are calculated using K-Nearest Neighbour modelling and my data was sourced from [rapidapi.com](https://rapidapi.com/api-sports/api/api-nba)")
+    st.markdown("To see how this page was developed, visit my [github](https://github.com/TobyScogings/NBA-Similarity-App)")
 
 if "active_feature" not in st.session_state:
     st.session_state.active_feature = "player_comp"
