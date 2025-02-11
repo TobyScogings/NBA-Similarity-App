@@ -118,6 +118,7 @@ def similarity(name_input, year_input, index_input):
             x=alt.X('Percentile:Q', title='Percentile'),
             y=alt.Y('Stat:N', sort=data.columns.tolist(), title='Stat'),
             color=alt.Color('Percentile:Q', scale=alt.Scale(domain=[0, 100], range=['red', 'green']), legend=None),
+            tooltip=[alt.Tooltip('Stat:N', title='Stat'), alt.Tooltip('Percentile:Q', title='Percentile')]
           ).properties(
             title=f'Percentiles for {name_input} in {year_input}.',
             width=600
@@ -146,6 +147,7 @@ def similarity(name_input, year_input, index_input):
                 x=alt.X('Percentile:Q', title='Percentile'),
                 y=alt.Y('Stat:N', sort=data.columns.tolist(), title='Stat'),
                 color=alt.Color('Percentile:Q', scale=alt.Scale(domain=[0, 100], range=['red', 'green']), legend=None),
+                tooltip=[alt.Tooltip('Stat:N', title='Stat'), alt.Tooltip('Percentile:Q', title='Percentile')]
               ).properties(
                 title=f'Percentiles for {name_input} this season.',
                 width=600
