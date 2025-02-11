@@ -319,7 +319,7 @@ Blocks: {blocks}""")
 
             st.write(filled_columns)
             
-            transform_input = filled_columns
+            transform_input = filled_columns.copy()
             if 'FG%' in filled_columns:
                 transform_input.remove('FG%')
             if '3P%' in filled_columns:
