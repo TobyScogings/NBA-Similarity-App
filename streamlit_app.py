@@ -114,6 +114,9 @@ def similarity(name_input, year_input, index_input):
             percentile_df_for_chart = target_player_percentile.to_frame(name="Percentile")
             percentile_df_for_chart['Stat'] = percentile_df_for_chart.index
             percentile_df_for_chart['Actual Value'] = target_player_row[data.columns].values[0]
+
+            percentile_df_for_chart['Percentile'] = percentile_df_for_chart['Percentile'].apply(lambda x: round(x))
+            percentile_df_for_chart['Actual Value'] = percentile_df_for_chart['Actual Value'].apply(lambda x: round(x, 2))
                 
             chart = alt.Chart(percentile_df_for_chart).mark_bar().encode(
             x=alt.X('Percentile:Q', title='Percentile'),
@@ -151,6 +154,8 @@ def similarity(name_input, year_input, index_input):
                 percentile_df_for_chart['Stat'] = percentile_df_for_chart.index
                 percentile_df_for_chart['Actual Value'] = target_player_row[data.columns].values[0]
                 
+                percentile_df_for_chart['Percentile'] = percentile_df_for_chart['Percentile'].apply(lambda x: round(x))
+                percentile_df_for_chart['Actual Value'] = percentile_df_for_chart['Actual Value'].apply(lambda x: round(x, 2))
                 
                 chart = alt.Chart(percentile_df_for_chart).mark_bar().encode(
                 x=alt.X('Percentile:Q', title='Percentile'),
