@@ -325,7 +325,11 @@ Blocks: {blocks}""")
             st.write(non_transform_df['Points'].mean())
             
             comp_df = non_transform_df[filled_columns]
-            df_scaled = comp_df.copy()
+
+            df_logged = non_transform_df[transform_input].apply(lambda x: np.log(x + 0.0001))
+
+            
+            df_scaled = df_logged.copy()
 
             # Initialize and fit the StandardScaler to the full dataset
             scaler = StandardScaler()
