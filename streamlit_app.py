@@ -321,6 +321,8 @@ Blocks: {blocks}""")
 
             # Columns to scale: filled_columns
             # Create extract of non_transform_df with cols from filled_columns
+
+            st.write(non_transform_df['Points'].mean())
             
             comp_df = non_transform_df[filled_columns]
             df_scaled = comp_df.copy()
