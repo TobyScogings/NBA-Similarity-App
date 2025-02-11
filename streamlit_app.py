@@ -322,7 +322,7 @@ Blocks: {blocks}""")
 
             # Initialize and fit the StandardScaler to the full dataset
             scaler = StandardScaler()
-            df_scaled[filled_columns] = scaler.fit_transform(comp_df)
+            df_scaled[filled_columns] = scaler.fit_transform(comp_df[filled_columns])
 
             input_df_scaled = input_df.copy()
             input_df_scaled = scaler.transform(input_df)
