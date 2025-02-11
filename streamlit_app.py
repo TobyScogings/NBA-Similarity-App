@@ -321,6 +321,8 @@ Blocks: {blocks}""")
             st.write(input_df)
 
             input_df[transform_input] = input_df[transform_input].apply(lambda x: np.log(x + 0.0001))
+
+            st.write(input_df)
          
             df_scaled = comp_df.copy()
 
