@@ -166,13 +166,11 @@ knn = NearestNeighbors(n_neighbors=20, metric='euclidean')
 knn.fit(data)
 
 
-def stat_similarity(filled_columns, df, non_transform_df, user_input_df):
-    # Create a DataFrame using only the columns that were filled in by the user
-    comp_df = df[filled_columns]
+### STAT COMPARISON
 
-    # Ensure that the columns in user_input_df match the columns in comp_df
-    # Reindex user_input_df to match the order of columns in comp_df
-    user_input_df = user_input_df[filled_columns]
+
+def stat_similarity(filled_columns, df, non_transform_df, user_input_df, comp_df):
+    # Create a DataFrame using only the columns that were filled in by the user
 
     # Initialize Nearest Neighbors model
     stat_knn = NearestNeighbors(n_neighbors=20, metric='euclidean')
@@ -304,6 +302,9 @@ Blocks: {blocks}""")
                 input_data[optional_stats[key]] = value
 
             filled_columns = [col for col, val in input_data.items() if val != 0.0]
+
+            comp_df = non_transform_df[filled_columns]
+            
             transform_input = filled_columns
             if 'FG%' in filled_columns:
                 transform_input.remove('FG%')
@@ -315,13 +316,20 @@ Blocks: {blocks}""")
             # Convert the dictionary to a DataFrame
             input_df = pd.DataFrame([input_data])
 
-            input_df.loc[:, transform_input] = input_df[transform_input].apply(lambda x: np.log(x + 0.0001))
+            input_df[transform_input] = input_df[transform_input].apply(lambda x: np.log(x + 0.0001))
          
-            scaler = StandardScaler()
-            scaled_user_input = scaler.fit_transform(input_df)
-            user_input_df = pd.DataFrame(scaled_user_input, columns=input_df.columns)
+            df_scaled = comp_df.copy()
 
-            stat_similarity(filled_columns, df, non_transform_df, user_input_df)
+            # Initialize and fit the StandardScaler to the full dataset
+            scaler = StandardScaler()
+            df_scaled[filled_columns] = scaler.fit_transform(comp_df)
+
+            input_df_scaled = input_df.copy()
+            input_df_scaled = scaler.transform(input_df)
+
+            user_input_df = input_df_scaled
+
+            stat_similarity(filled_columns, df, non_transform_df, user_input_df, comp_df)
 
 
 
