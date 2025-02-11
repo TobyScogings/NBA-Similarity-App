@@ -172,11 +172,13 @@ knn.fit(data)
 def stat_similarity(filled_columns, df, non_transform_df, user_input_df, comp_df):
     # Create a DataFrame using only the columns that were filled in by the user
 
+    stat_data = data[filled_columns]
+    
     # Initialize Nearest Neighbors model
     stat_knn = NearestNeighbors(n_neighbors=20, metric='euclidean')
     
     # Fit the model with the comparison DataFrame
-    stat_knn.fit(comp_df)
+    stat_knn.fit(stat_data)
     
     # Now that the model is fitted, find the most similar players
     stat_similar_indices = find_similar_players(user_input_df, stat_knn)
@@ -301,6 +303,14 @@ Blocks: {blocks}""")
             for key, value in selected_stats.items():
                 input_data[optional_stats[key]] = value
 
+###############################################################################################################
+
+            # Input Log Transformation:
+            # Define the columns the user has selected (all non-zero columns)
+            # Remove percentage columns
+            # Apply log transformation
+            # This all follows the method used in data preparation
+            
             filled_columns = [col for col, val in input_data.items() if val != 0.0]
             
             transform_input = filled_columns
@@ -321,17 +331,17 @@ Blocks: {blocks}""")
 
             # Columns to scale: filled_columns
             # Create extract of non_transform_df with cols from filled_columns
+            # Log our original data in order to define the scaler for our singular row
+            # Initialise and fit the scaler on this full dataset
+            # Apply this scaler to transform our singular input
             
             comp_df = non_transform_df[filled_columns]
 
             df_logged = non_transform_df[transform_input].apply(lambda x: np.log(x + 0.0001))
 
-            st.write(df_logged['Points'].mean())
-
             
             df_scaled = df_logged.copy()
 
-            # Initialize and fit the StandardScaler to the full dataset
             scaler = StandardScaler()
             df_scaled[filled_columns] = scaler.fit_transform(df_logged[filled_columns])
 
@@ -339,8 +349,6 @@ Blocks: {blocks}""")
             input_df_scaled[filled_columns] = scaler.transform(input_df[filled_columns])
 
             user_input_df = input_df_scaled
-
-            st.write(user_input_df)
 
 
 ################################################################################################################
