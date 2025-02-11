@@ -189,6 +189,34 @@ def similarity(name_input, year_input, index_input):
 knn = NearestNeighbors(n_neighbors=20, metric='euclidean')
 knn.fit(data)
 
+### Player Comparison Option
+
+
+def player_comp(df):
+    # Year selection
+    years = sorted(df['year'].unique().tolist(), reverse=True)
+    default_year = max(years) if years else None  # Default year handling if the list is empty
+    selected_year = st.selectbox("Select Year", years, index=years.index(default_year) if default_year in years else 0) if years else None
+    
+    # Player selection (dynamically populated based on selected year)
+    if selected_year is not None:  # Checks if a year has been selected
+        players_in_year = df[df['year'] == selected_year].sort_values(by='Full Name')['Full Name'].tolist()
+    
+        if players_in_year:
+            selected_player = st.selectbox("Select Player", players_in_year)
+    
+            try:
+                index_input = df[(df['Full Name'] == selected_player) & (df['year'] == selected_year)].index[0]
+                similarity(selected_player, selected_year, index_input)
+    
+            except IndexError:
+                st.error(f"No data found for {selected_player} in {selected_year}. Please select a different player or year.")
+    
+        else:
+            st.write(f"No players found for the year {selected_year}")
+    else:
+        st.write("No years available in the data.")
+
 
 ### STAT COMPARISON
 
@@ -235,39 +263,12 @@ def find_similar_players(user_input_df, stat_knn, non_transform_df):
     return valid_indices
 
 
-### Player Comparison Option
-
-
-def player_comp(df):
-    # Year selection
-    years = sorted(df['year'].unique().tolist(), reverse=True)
-    default_year = max(years) if years else None  # Default year handling if the list is empty
-    selected_year = st.selectbox("Select Year", years, index=years.index(default_year) if default_year in years else 0) if years else None
-    
-    # Player selection (dynamically populated based on selected year)
-    if selected_year is not None:  # Checks if a year has been selected
-        players_in_year = df[df['year'] == selected_year].sort_values(by='Full Name')['Full Name'].tolist()
-    
-        if players_in_year:
-            selected_player = st.selectbox("Select Player", players_in_year)
-    
-            try:
-                index_input = df[(df['Full Name'] == selected_player) & (df['year'] == selected_year)].index[0]
-                similarity(selected_player, selected_year, index_input)
-    
-            except IndexError:
-                st.error(f"No data found for {selected_player} in {selected_year}. Please select a different player or year.")
-    
-        else:
-            st.write(f"No players found for the year {selected_year}")
-    else:
-        st.write("No years available in the data.")
-
 def stat_comp(non_transform_df):
     
     st.subheader("Enter Your Custom Statline")
 
-    # Mandatory stat entries
+###############################################################################################################  --- Mandatory Stat Inputs ---
+    
     points = st.slider("Points Per Game", min_value=0.01, max_value = max(non_transform_df['Points']), step=0.01)
     assists = st.slider("Assists Per Game", min_value=0.01, max_value = max(non_transform_df['Assists']), step=0.01)
     rebounds = st.slider("Rebounds Per Game", min_value=0.01, max_value = max(non_transform_df['Rebounds']), step=0.01)
@@ -279,6 +280,8 @@ def stat_comp(non_transform_df):
         st.write("You must first set your values for these 5 key stats")
     else:
         st.subheader(f"\nPlease now choose any other stats you would like to add in:\n")
+
+###############################################################################################################  --- Optional Stat Inputs ---
         
         optional_stats = {'min': 'Minutes',
         'fga': 'FGA',
@@ -298,14 +301,8 @@ def stat_comp(non_transform_df):
         for key, label in optional_stats.items():
             if st.checkbox(label):  # Checkbox with stat name
                 selected_stats[key] = st.slider(f"Enter {label}", min_value=0.01, max_value=max(non_transform_df[label]), step=0.1, value=0.0)
-    
-        # if selected_stats:
-        #     for label, value in selected_stats.items():
-        #         st.write(f"- **{label}**: {round(value,2)}")
-        # else:
-        #     st.write("No additional stats selected.")
-    
-        
+
+###############################################################################################################  --- Input Processing ---
         
         if st.button("Find my comparisons!"):
             # Collect all input data into a dictionary
@@ -395,6 +392,7 @@ Future updates include the ability to compare custom statlines, standardise stat
 
 with st.sidebar:
     st.subheader("NBA Comparison Tool")
+    st.markdown("This app has been created using NBA player statistics since the 2020/2021 season. This app allows you to directly compare actual seasonal averages or to find similar statistical seasons to custom statline inputs. Similarities are calculated using K-Nearest Neighbour modelling and my data was sourced from [rapidapi.com](https://rapidapi.com/api-sports/api/api-nba)")
 
 if "active_feature" not in st.session_state:
     st.session_state.active_feature = "player_comp"
