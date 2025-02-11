@@ -179,6 +179,8 @@ def stat_similarity(filled_columns, df, non_transform_df, user_input_df, comp_df
     
     # Fit the model with the comparison DataFrame
     stat_knn.fit(stat_data)
+
+    st.write(user_input_df)
     
     # Now that the model is fitted, find the most similar players
     stat_similar_indices = find_similar_players(user_input_df, stat_knn, non_transform_df)
