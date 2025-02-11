@@ -185,7 +185,7 @@ def stat_similarity(filled_columns, df, non_transform_df, user_input_df, comp_df
 
     if stat_similar_indices:
         stat_similar_player = non_transform_df.iloc[stat_similar_indices].drop(columns=['player_id'])
-        st.write(f"5 most similar players to your custom statline:")
+        st.write(f"5 most similar players to your custom statline (Note: Each player will only show once with their closest season!)")
         st.dataframe(stat_similar_player.style.format(precision=2), hide_index=True)
     else:
         st.write(f"No similar players to your custom statline found.")
