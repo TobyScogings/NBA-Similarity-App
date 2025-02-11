@@ -181,7 +181,7 @@ def stat_similarity(filled_columns, df, non_transform_df, user_input_df, comp_df
     stat_knn.fit(stat_data)
     
     # Now that the model is fitted, find the most similar players
-    stat_similar_indices = find_similar_players(user_input_df, stat_knn)
+    stat_similar_indices = find_similar_players(user_input_df, stat_knn, non_transform_df)
 
     if stat_similar_indices:
         stat_similar_player = non_transform_df.iloc[stat_similar_indices].drop(columns=['player_id'])
@@ -190,20 +190,22 @@ def stat_similarity(filled_columns, df, non_transform_df, user_input_df, comp_df
     else:
         st.write(f"No similar players to your custom statline found.")
 
-def find_similar_players(user_input_df, stat_knn):
+def find_similar_players(user_input_df, stat_knn, non_transform_df):
     # Get distances and indices for the nearest neighbors
     distances, indices = stat_knn.kneighbors(user_input_df)
 
-    # Set to track unique indices to avoid duplicates
     valid_indices = []
+    seen_players = set()  # Track player names
 
     # Loop through the indices of the nearest neighbors
     for i in indices[0]:
-        if i not in valid_indices:  # Make sure the index hasn't been added already
-            valid_indices.append(i)  # Add index to the valid indices list
+        player_name = non_transform_df.iloc[i]['player_name']  # Get player's name
 
-        # Stop if we have found 5 valid players
-        if len(valid_indices) == 5:
+        if player_name not in seen_players:  # Ensure uniqueness
+            seen_players.add(player_name)
+            valid_indices.append(i)
+
+        if len(valid_indices) == 5:  # Stop once we have 5 unique players
             break
 
     return valid_indices
