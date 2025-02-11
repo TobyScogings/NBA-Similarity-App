@@ -329,6 +329,8 @@ Blocks: {blocks}""")
 
             user_input_df = input_df_scaled
 
+            st.write(user_input_df)
+
             stat_similarity(filled_columns, df, non_transform_df, user_input_df, comp_df)
 
 
