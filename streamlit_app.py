@@ -342,11 +342,14 @@ Blocks: {blocks}""")
             comp_df = non_transform_df[filled_columns]
 
             df_logged = non_transform_df[transform_input].apply(lambda x: np.log(x + 0.0001))
+            other_cols = non_transform_df.drop(columns=transform_input)
+            df_combined = pd.concat([df_logged, other_columns], axis=1)
+            df_combined = df_combined[filled_cols]
 
-            df_scaled = df_logged.copy()
+            df_scaled = df_combined.copy()
 
             scaler = StandardScaler()
-            df_scaled[filled_columns] = scaler.fit_transform(df_logged[filled_columns])
+            df_scaled[filled_columns] = scaler.fit_transform(df_combined[filled_columns])
 
             input_df_scaled = input_df.copy()
             input_df_scaled[filled_columns] = scaler.transform(input_df[filled_columns])
