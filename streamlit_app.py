@@ -318,6 +318,8 @@ Blocks: {blocks}""")
             # Convert the dictionary to a DataFrame
             input_df = pd.DataFrame([input_data])
 
+            st.write(input_df)
+
             input_df[transform_input] = input_df[transform_input].apply(lambda x: np.log(x + 0.0001))
          
             df_scaled = comp_df.copy()
