@@ -296,41 +296,41 @@ Blocks: {blocks}""")
                 'Steals': steals,
                 'Blocks': blocks
             }
-    
+        
             # Add selected optional stats to the dictionary
             for key, value in selected_stats.items():
                 input_data[optional_stats[key]] = value
-
+        
+            # Determine selected columns (those with nonzero values)
             filled_columns = [col for col, val in input_data.items() if val != 0.0]
-
-            comp_df = non_transform_df[filled_columns]
-            
-            transform_input = filled_columns
-            if 'FG%' in filled_columns:
-                transform_input.remove('FG%')
-            if '3P%' in filled_columns:
-                transform_input.remove('3P%')
-            if 'FT%' in filled_columns:
-                transform_input.remove('FT%')
-    
-            # Convert the dictionary to a DataFrame
+        
+            # Ensure 'FG%', '3P%', 'FT%' are excluded from log transformation
+            transform_input = [col for col in filled_columns if col not in ['FG%', '3P%', 'FT%']]
+        
+            # Convert input dictionary to DataFrame
             input_df = pd.DataFrame([input_data])
-
+        
+            # Apply log transformation to selected stats
             input_df[transform_input] = input_df[transform_input].apply(lambda x: np.log(x + 0.0001))
-         
-            df_scaled = comp_df.copy()
-
-            # Initialize and fit the StandardScaler to the full dataset
+        
+            # StandardScaler should be fitted on the full dataset, not just selected columns
+            full_dataset_columns = non_transform_df.columns  # Ensure full dataset is used
             scaler = StandardScaler()
-            df_scaled[filled_columns] = scaler.fit_transform(comp_df[filled_columns])
-
-            input_df_scaled = input_df.copy()
-            input_df_scaled = scaler.transform(input_df[filled_columns])
-
-            user_input_df = input_df_scaled
-
+            scaler.fit(non_transform_df[full_dataset_columns])  # Fit on the entire dataset
+        
+            # Create a DataFrame with all columns and fill missing ones with 0
+            input_df_full = pd.DataFrame(columns=full_dataset_columns)
+            for col in full_dataset_columns:
+                input_df_full[col] = input_df[col] if col in input_df else 0
+        
+            # Apply the same scaling as the full dataset
+            input_df_scaled = pd.DataFrame(scaler.transform(input_df_full), columns=full_dataset_columns)
+        
+            # Output the transformed DataFrame
+            user_input_df = input_df_scaled[filled_columns]  # Keep only relevant stats
             st.write(user_input_df)
-
+        
+            # Pass the transformed data for similarity calculation
             stat_similarity(filled_columns, df, non_transform_df, user_input_df, comp_df)
 
 
