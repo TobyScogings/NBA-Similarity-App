@@ -284,54 +284,59 @@ Blocks: {blocks}""")
                 st.write(f"- **{label}**: {round(value,2)}")
         else:
             st.write("No additional stats selected.")
+
+        # Define non-scaled columns (categorical or identifiers)
+    non_scaled_cols = ['Player_id', 'Full Name', 'team', 'year']
     
-        
-        
-        if st.button("Convert to DataFrame"):
-            # Collect all input data into a dictionary
-            input_data = {
-                'Points': points,
-                'Assists': assists,
-                'Rebounds': rebounds,
-                'Steals': steals,
-                'Blocks': blocks
-            }
-        
-            # Add selected optional stats to the dictionary
-            for key, value in selected_stats.items():
-                input_data[optional_stats[key]] = value
-        
-            # Determine selected columns (those with nonzero values)
-            filled_columns = [col for col, val in input_data.items() if val != 0.0]
-        
-            # Ensure 'FG%', '3P%', 'FT%' are excluded from log transformation
-            transform_input = [col for col in filled_columns if col not in ['FG%', '3P%', 'FT%']]
-        
-            # Convert input dictionary to DataFrame
-            input_df = pd.DataFrame([input_data])
-        
-            # Apply log transformation to selected stats
-            input_df[transform_input] = input_df[transform_input].apply(lambda x: np.log(x + 0.0001))
-        
-            # StandardScaler should be fitted on the full dataset, not just selected columns
-            full_dataset_columns = non_transform_df.columns  # Ensure full dataset is used
-            scaler = StandardScaler()
-            scaler.fit(non_transform_df[full_dataset_columns])  # Fit on the entire dataset
-        
-            # Create a DataFrame with all columns and fill missing ones with 0
-            input_df_full = pd.DataFrame(columns=full_dataset_columns)
-            for col in full_dataset_columns:
-                input_df_full[col] = input_df[col] if col in input_df else 0
-        
-            # Apply the same scaling as the full dataset
-            input_df_scaled = pd.DataFrame(scaler.transform(input_df_full), columns=full_dataset_columns)
-        
-            # Output the transformed DataFrame
-            user_input_df = input_df_scaled[filled_columns]  # Keep only relevant stats
-            st.write(user_input_df)
-        
-            # Pass the transformed data for similarity calculation
-            stat_similarity(filled_columns, df, non_transform_df, user_input_df, comp_df)
+    if st.button("Convert to DataFrame"):
+        # Collect all input data into a dictionary
+        input_data = {
+            'Points': points,
+            'Assists': assists,
+            'Rebounds': rebounds,
+            'Steals': steals,
+            'Blocks': blocks
+        }
+    
+        # Add selected optional stats to the dictionary
+        for key, value in selected_stats.items():
+            input_data[optional_stats[key]] = value
+    
+        # Determine selected columns (those with nonzero values)
+        filled_columns = [col for col, val in input_data.items() if val != 0.0]
+    
+        # Exclude FG%, 3P%, FT% from log transformation
+        transform_input = [col for col in filled_columns if col not in ['FG%', '3P%', 'FT%']]
+    
+        # Convert input dictionary to DataFrame
+        input_df = pd.DataFrame([input_data])
+    
+        # Apply log transformation to relevant stats
+        input_df[transform_input] = input_df[transform_input].apply(lambda x: np.log(x + 0.0001))
+    
+        # Define numeric columns for scaling (excluding non-scaled categorical columns)
+        numeric_columns = [col for col in non_transform_df.columns if col not in non_scaled_cols]
+    
+        # Fit StandardScaler on the full dataset (only numeric columns)
+        scaler = StandardScaler()
+        scaler.fit(non_transform_df[numeric_columns])
+    
+        # Create a DataFrame with all expected numeric columns, fill missing ones with 0
+        input_df_full = pd.DataFrame(columns=numeric_columns)
+        for col in numeric_columns:
+            input_df_full[col] = input_df[col] if col in input_df else 0
+    
+        # Apply StandardScaler transformation
+        input_df_scaled = pd.DataFrame(scaler.transform(input_df_full), columns=numeric_columns)
+    
+        # Keep only selected numeric columns in final transformed user input
+        user_input_df = input_df_scaled[filled_columns]
+    
+        # Output the transformed DataFrame
+        st.write(user_input_df)
+    
+        # Pass transformed input for similarity comparison
+        stat_similarity(filled_columns, df, non_transform_df, user_input_df, comp_df)
 
 
 
