@@ -344,7 +344,7 @@ Blocks: {blocks}""")
             df_logged = non_transform_df[transform_input].apply(lambda x: np.log(x + 0.0001))
             other_cols = non_transform_df.drop(columns=transform_input)
             df_combined = pd.concat([df_logged, other_cols], axis=1)
-            df_combined = df_combined[filled_cols]
+            df_combined = df_combined[filled_columns]
 
             df_scaled = df_combined.copy()
 
