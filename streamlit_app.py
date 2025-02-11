@@ -343,11 +343,12 @@ Blocks: {blocks}""")
 
             df_logged = non_transform_df[transform_input].apply(lambda x: np.log(x + 0.0001))
 
-            
             df_scaled = df_logged.copy()
 
             scaler = StandardScaler()
             df_scaled[filled_columns] = scaler.fit_transform(df_logged[filled_columns])
+
+            st.write(filled_columns)
 
             input_df_scaled = input_df.copy()
             input_df_scaled[filled_columns] = scaler.transform(input_df[filled_columns])
