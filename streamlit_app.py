@@ -316,6 +316,8 @@ Blocks: {blocks}""")
             # This all follows the method used in data preparation
             
             filled_columns = [col for col, val in input_data.items() if val != 0.0]
+
+            st.write(filled_columns)
             
             transform_input = filled_columns
             if 'FG%' in filled_columns:
