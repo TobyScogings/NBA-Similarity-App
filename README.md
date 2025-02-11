@@ -19,7 +19,7 @@ Data Analytics training project converted into personal development passion proj
 
 # Future Changes
 
-- New input system - dynamic stat inputs for hypothetical comparison
 - Improved output comparisons
+- Improved input support - allow filtering of player options.
 - Per minute or per 36 minutes stat option
 - Improved system explanation on site
