@@ -370,7 +370,7 @@ st.write("""This app allows users to compare player stats and find similar playe
 Future updates include the ability to compare custom statlines, standardise stats per 36 minutes and more!""")
 
 if "active_feature" not in st.session_state:
-    st.session_state.active_feature = None
+    st.session_state.active_feature = "player_comp"
 
 # Create system choice buttons
 choice_col1, choice_col2 = st.columns(2)
