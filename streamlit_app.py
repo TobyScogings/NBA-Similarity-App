@@ -1,5 +1,9 @@
 ### Changes to this document were made after the academy finished. This work did not fall within the scope of my final capstone project but was done as a personal passion project.
 
+### Created Jan/Feb 2025
+### Data Sourced Jan. 28th 2025
+### Developed by Toby Scogings
+
 import streamlit as st
 import pandas as pd, numpy as np
 from sklearn.neighbors import NearestNeighbors
@@ -368,6 +372,9 @@ st.subheader("What does this app do?")
 st.write("""This app allows users to compare player stats and find similar players. Current functionality allows users to select any player that has min. 1 second of playing time since 2020/21 and find their 5 most similar players. First, select the year to compare and then the desired player.
 
 Future updates include the ability to compare custom statlines, standardise stats per 36 minutes and more!""")
+
+with st.sidebar:
+    st.subheader("NBA Comparison Tool")
 
 if "active_feature" not in st.session_state:
     st.session_state.active_feature = "player_comp"
