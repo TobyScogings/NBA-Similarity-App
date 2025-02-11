@@ -302,10 +302,6 @@ Blocks: {blocks}""")
                 input_data[optional_stats[key]] = value
 
             filled_columns = [col for col, val in input_data.items() if val != 0.0]
-
-            st.write(filled_columns)
-
-            comp_df = non_transform_df[filled_columns]
             
             transform_input = filled_columns
             if 'FG%' in filled_columns:
@@ -318,12 +314,15 @@ Blocks: {blocks}""")
             # Convert the dictionary to a DataFrame
             input_df = pd.DataFrame([input_data])
 
-            st.write(input_df)
-
             input_df[transform_input] = input_df[transform_input].apply(lambda x: np.log(x + 0.0001))
 
-            st.write(input_df)
-         
+
+################################################################################################################
+
+            # Columns to scale: filled_columns
+            # Create extract of non_transform_df with cols from filled_columns
+            
+            comp_df = non_transform_df[filled_columns]
             df_scaled = comp_df.copy()
 
             # Initialize and fit the StandardScaler to the full dataset
@@ -331,11 +330,15 @@ Blocks: {blocks}""")
             df_scaled[filled_columns] = scaler.fit_transform(non_transform_df[filled_columns])
 
             input_df_scaled = input_df.copy()
-            input_df_scaled = scaler.transform(input_df[filled_columns])
+            input_df_scaled[filled_columns] = scaler.transform(input_df[filled_columns])
 
             user_input_df = input_df_scaled
 
             st.write(user_input_df)
+
+
+################################################################################################################
+            
 
             stat_similarity(filled_columns, df, non_transform_df, user_input_df, comp_df)
 
