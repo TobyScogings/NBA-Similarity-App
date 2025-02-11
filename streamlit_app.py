@@ -222,7 +222,7 @@ def player_comp(df):
     
     # Player selection (dynamically populated based on selected year)
     if selected_year is not None:  # Checks if a year has been selected
-        players_in_year = df[df['year'] == selected_year]['Full Name'].sort_values(by = 'Full Name').tolist()
+        players_in_year = df[df['year'] == selected_year].sort_values(by='Full Name')['Full Name'].tolist()
     
         if players_in_year:
             selected_player = st.selectbox("Select Player", players_in_year)
