@@ -325,7 +325,7 @@ Blocks: {blocks}""")
             df_scaled[filled_columns] = scaler.fit_transform(comp_df[filled_columns])
 
             input_df_scaled = input_df.copy()
-            input_df_scaled = scaler.transform(input_df)
+            input_df_scaled = scaler.transform(input_df[filled_columns])
 
             user_input_df = input_df_scaled
 
