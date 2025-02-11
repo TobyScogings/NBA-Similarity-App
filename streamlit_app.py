@@ -108,24 +108,31 @@ def similarity(name_input, year_input, index_input):
         # ***Correct way to get the percentile***
         target_player_row = non_transform_df[(non_transform_df['Full Name'] == name_input) & (non_transform_df['year'] == year_input)]
         if not target_player_row.empty: #Check to make sure the row exists
-          target_player_index_year = target_player_row.index[0]
-          target_player_percentile = percentile_df_year.loc[target_player_index_year] #Use .loc to access the percentile by index
-    
-          percentile_df_for_chart = target_player_percentile.to_frame(name="Percentile")
-          percentile_df_for_chart['Stat'] = percentile_df_for_chart.index
-    
-          chart = alt.Chart(percentile_df_for_chart).mark_bar().encode(
+            target_player_index_year = target_player_row.index[0]
+            target_player_percentile = percentile_df_year.loc[target_player_index_year] #Use .loc to access the percentile by index
+                
+            percentile_df_for_chart = target_player_percentile.to_frame(name="Percentile")
+            percentile_df_for_chart['Stat'] = percentile_df_for_chart.index
+            percentile_df_for_chart['Actual Value'] = target_player_row[data.columns].values[0]
+                
+            chart = alt.Chart(percentile_df_for_chart).mark_bar().encode(
             x=alt.X('Percentile:Q', title='Percentile'),
             y=alt.Y('Stat:N', sort=data.columns.tolist(), title='Stat'),
             color=alt.Color('Percentile:Q', scale=alt.Scale(domain=[0, 100], range=['red', 'green']), legend=None),
-            tooltip=[alt.Tooltip('Stat:N', title='Stat'), alt.Tooltip('Percentile:Q', title='Percentile')]
-          ).properties(
+                        
+            tooltip=[
+            alt.Tooltip('Stat:N', title='Stat'),
+            alt.Tooltip('Percentile:Q', title='Percentile'),
+            alt.Tooltip('Actual Value:Q', title='Actual Stat Value')
+            ]
+            
+            ).properties(
             title=f'Percentiles for {name_input} in {year_input}.',
             width=600
-          )
-          st.altair_chart(chart, use_container_width=True)
+            )
+            st.altair_chart(chart, use_container_width=True)
         else:
-          st.write(f"No data found for {name_input} in {year_input} to calculate percentiles.")
+            st.write(f"No data found for {name_input} in {year_input} to calculate percentiles.")
 
     
     ### ALL TIME PERCENTILES
@@ -137,24 +144,30 @@ def similarity(name_input, year_input, index_input):
             # ***Correct way to get the percentile***
             target_player_row = non_transform_df[(non_transform_df['Full Name'] == name_input) & (non_transform_df['year'] == 2024)]
             if not target_player_row.empty: #Check to make sure the row exists
-              target_player_index_year = target_player_row.index[0]
-              target_player_percentile = percentile_df_year.loc[target_player_index_year] #Use .loc to access the percentile by index
+                target_player_index_year = target_player_row.index[0]
+                target_player_percentile = percentile_df_year.loc[target_player_index_year] #Use .loc to access the percentile by index
         
-              percentile_df_for_chart = target_player_percentile.to_frame(name="Percentile")
-              percentile_df_for_chart['Stat'] = percentile_df_for_chart.index
-        
-              chart = alt.Chart(percentile_df_for_chart).mark_bar().encode(
+                percentile_df_for_chart = target_player_percentile.to_frame(name="Percentile")
+                percentile_df_for_chart['Stat'] = percentile_df_for_chart.index
+                percentile_df_for_chart['Actual Value'] = target_player_row[data.columns].values[0]
+                
+                
+                chart = alt.Chart(percentile_df_for_chart).mark_bar().encode(
                 x=alt.X('Percentile:Q', title='Percentile'),
                 y=alt.Y('Stat:N', sort=data.columns.tolist(), title='Stat'),
                 color=alt.Color('Percentile:Q', scale=alt.Scale(domain=[0, 100], range=['red', 'green']), legend=None),
-                tooltip=[alt.Tooltip('Stat:N', title='Stat'), alt.Tooltip('Percentile:Q', title='Percentile')]
-              ).properties(
+                tooltip=[
+                alt.Tooltip('Stat:N', title='Stat'),
+                alt.Tooltip('Percentile:Q', title='Percentile'),
+                alt.Tooltip('Actual Value:Q', title='Actual Stat Value')
+                ]
+                ).properties(
                 title=f'Percentiles for {name_input} this season.',
                 width=600
-              )
-              st.altair_chart(chart, use_container_width=True)
+                )
+                st.altair_chart(chart, use_container_width=True)
             else:
-              st.write(f"No data found for {name_input} in {year_input} to calculate percentiles.")
+                st.write(f"No data found for {name_input} in {year_input} to calculate percentiles.")
 
 
     ### SIMILAR PLAYERS OUTPUTS
