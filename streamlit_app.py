@@ -333,7 +333,7 @@ Blocks: {blocks}""")
 
             # Initialize and fit the StandardScaler to the full dataset
             scaler = StandardScaler()
-            df_scaled[filled_columns] = scaler.fit_transform(non_transform_df[filled_columns])
+            df_scaled[filled_columns] = scaler.fit_transform(df_logged[filled_columns])
 
             input_df_scaled = input_df.copy()
             input_df_scaled[filled_columns] = scaler.transform(input_df[filled_columns])
