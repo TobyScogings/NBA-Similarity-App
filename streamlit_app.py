@@ -388,7 +388,7 @@ st.subheader("What does this app do?")
 
 st.write("""This app allows users to compare player stats and find similar players. Current functionality allows users to select any player that has min. 1 second of playing time since 2020/21 and find their 5 most similar players. First, select the year to compare and then the desired player.
 
-Future updates include the ability to compare custom statlines, standardise stats per 36 minutes and more!""")
+Future updates include per 36 standardisation, player filtering and more!""")
 
 with st.sidebar:
     st.subheader("NBA Comparison Tool")
