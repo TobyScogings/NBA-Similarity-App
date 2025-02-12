@@ -332,7 +332,7 @@ def player_comp(df):
 ###############################################################################################################  --- Player Per 36 Comparison ---
 
 
-def player_comp(df):
+def player_comp_p36(df):
 
     st.write("This functionality is a work in progress. Please check back later. For now, feel free to use the other functions available")
     
@@ -581,7 +581,7 @@ if st.session_state.active_feature == "player_comp" and st.session_state.stat_ty
     if st.session_state.stat_type == "standard":
         player_comp(df)  # Function for standard stats
     elif st.session_state.stat_type == "per36":
-        player_comp_per36(df)  # Function for per36 stats
+        player_comp_p36(df)  # Function for per36 stats
 
 elif st.session_state.active_feature == "stat_comp":
     stat_comp(non_transform_df)
