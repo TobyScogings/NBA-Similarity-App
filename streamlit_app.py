@@ -12,13 +12,14 @@ from sklearn.preprocessing import StandardScaler
 
 st.set_page_config(layout="wide")
 
-# Load data (make sure these paths are correct)
+# Load data 
 df = pd.read_csv("model_data.csv")
 non_transform_df = pd.read_csv("model_data_pre-transform.csv")
+p36 = pd.read_csv("per_36.csv")
+non_transform_p36 = pd.read_csv("reg_per_36.csv")
 
 # Column renaming
-
-df = df.rename(columns={
+columns_rename = {
     'points': 'Points',
     'totReb': 'Rebounds',
     'assists': 'Assists',
@@ -35,26 +36,12 @@ df = df.rename(columns={
     'offReb': 'Off. Rebounds',
     'pFouls': 'Fouls',
     'turnovers': 'Turnovers'
-})
+}
 
-non_transform_df = non_transform_df.rename(columns={
-    'points': 'Points',
-    'totReb': 'Rebounds',
-    'assists': 'Assists',
-    'steals': 'Steals',
-    'blocks': 'Blocks',
-    'min': 'Minutes',
-    'fga': 'FGA',
-    'fg%': 'FG%',
-    'tpa': '3PA',
-    'tp%': '3P%',
-    'fta': 'FTA',
-    'ft%': 'FT%',
-    'defReb': 'Def. Rebounds',
-    'offReb': 'Off. Rebounds',
-    'pFouls': 'Fouls',
-    'turnovers': 'Turnovers'
-})
+df = df.rename(columns=columns_rename)
+non_transform_df = non_transform_df.rename(columns=columns_rename)
+p36 = p36.rename(columns=columns_rename)
+non_transform_p36 = non_transform_p36.rename(columns=columns_rename)
 
 data = df.drop(columns=['player_id', 'Full Name', 'team_name', 'year'])
 # Percentiles Bar Chart
@@ -73,8 +60,7 @@ def similarity(name_input, year_input, index_input):
     target_stats_df = pd.DataFrame(target_stats, columns=data.columns)
 
 
-    ### MODELLING STAGE AND OUTPUT DEFINITIONS
-
+###############################################################################################################  --- Modelling Output Definitions ---
     
     distances, indices = knn.kneighbors(target_stats_df)
 
@@ -90,8 +76,7 @@ def similarity(name_input, year_input, index_input):
     valid_indices = all_valid_indices[:5]
 
 
-    ### SELECTED PLAYER CURRENT STATS
-    
+###############################################################################################################  --- Chosen Player Stats ---    
 
     st.write(f"Target Player's Stats for {name_input} in {year_input}:")
     target_player_info = non_transform_df.iloc[index_input].to_frame().T
@@ -99,7 +84,7 @@ def similarity(name_input, year_input, index_input):
 
     col1, col2 = st.columns(2)
     
-    ### SELECTED SEASON PERCENTILES
+###############################################################################################################  --- Chosen Season Percentile Graph ---    
     
     with col1:
         year_data = non_transform_df[non_transform_df['year'] == year_input]
@@ -138,7 +123,8 @@ def similarity(name_input, year_input, index_input):
             st.write(f"No data found for {name_input} in {year_input} to calculate percentiles.")
 
     
-    ### ALL TIME PERCENTILES
+###############################################################################################################  --- 2024 Percentile Graph ---
+    
     if year_input != 2024 and df[(df['Full Name'] == name_input) & (df['year'] == 2024)].empty == False:
         with col2:
             year_data = non_transform_df[non_transform_df['year'] == 2024]
@@ -175,8 +161,7 @@ def similarity(name_input, year_input, index_input):
                 st.write(f"No data found for {name_input} in {year_input} to calculate percentiles.")
 
 
-    ### SIMILAR PLAYERS OUTPUTS
-    
+###############################################################################################################  --- Similar Players Output ---    
     
     if valid_indices:
         similar_player_info = non_transform_df.iloc[valid_indices].drop(columns=['player_id'])
@@ -189,7 +174,7 @@ def similarity(name_input, year_input, index_input):
 knn = NearestNeighbors(n_neighbors=20, metric='euclidean')
 knn.fit(data)
 
-### Player Comparison Option
+###############################################################################################################  --- Player Stat Comparison ---
 
 
 def player_comp(df):
@@ -218,8 +203,7 @@ def player_comp(df):
         st.write("No years available in the data.")
 
 
-### STAT COMPARISON
-
+###############################################################################################################  --- Statline Comparison ---
 
 def stat_similarity(filled_columns, df, non_transform_df, user_input_df, comp_df):
     # Create a DataFrame using only the columns that were filled in by the user
