@@ -336,29 +336,29 @@ def player_comp_p36(df):
 
     st.write("This functionality is a work in progress. Please check back later. For now, feel free to use the other functions available")
     
-    # # Year selection
-    # years = sorted(df['year'].unique().tolist(), reverse=True)
-    # default_year = max(years) if years else None  # Default year handling if the list is empty
-    # selected_year = st.selectbox("Select Year", years, index=years.index(default_year) if default_year in years else 0) if years else None
+    # Year selection
+    years = sorted(p36['year'].unique().tolist(), reverse=True)
+    default_year = max(years) if years else None  # Default year handling if the list is empty
+    selected_year = st.selectbox("Select Year", years, index=years.index(default_year) if default_year in years else 0) if years else None
     
-    # # Player selection (dynamically populated based on selected year)
-    # if selected_year is not None:  # Checks if a year has been selected
-    #     players_in_year = df[df['year'] == selected_year].sort_values(by='Full Name')['Full Name'].tolist()
+    # Player selection (dynamically populated based on selected year)
+    if selected_year is not None:  # Checks if a year has been selected
+        players_in_year = p36[p36['year'] == selected_year].sort_values(by='Full Name')['Full Name'].tolist()
     
-    #     if players_in_year:
-    #         selected_player = st.selectbox("Select Player", players_in_year)
+        if players_in_year:
+            selected_player = st.selectbox("Select Player", players_in_year)
     
-    #         try:
-    #             index_input = df[(df['Full Name'] == selected_player) & (df['year'] == selected_year)].index[0]
-    #             similarity(selected_player, selected_year, index_input)
+            try:
+                index_input = p36[(p36['Full Name'] == selected_player) & (p36['year'] == selected_year)].index[0]
+                similarity(selected_player, selected_year, index_input)
     
-    #         except IndexError:
-    #             st.error(f"No data found for {selected_player} in {selected_year}. Please select a different player or year.")
+            except IndexError:
+                st.error(f"No data found for {selected_player} in {selected_year}. Please select a different player or year.")
     
-    #     else:
-    #         st.write(f"No players found for the year {selected_year}")
-    # else:
-    #     st.write("No years available in the data.")
+        else:
+            st.write(f"No players found for the year {selected_year}")
+    else:
+        st.write("No years available in the data.")
 
 
 ###############################################################################################################  --- Statline Comparison ---
@@ -406,7 +406,7 @@ def find_similar_players(user_input_df, stat_knn, non_transform_df):
 
 
 def stat_comp(non_transform_df):
-    
+    st.title("Statline Comparison")
     st.subheader("Enter Your Custom Statline")
 
 ###############################################################################################################  --- Mandatory Stat Inputs ---
@@ -563,6 +563,7 @@ with choice_col2:
 
 # If Player Comparison is Selected, Show Stat Options
 if st.session_state.active_feature == "player_comp":
+    st.title("Player Comparison")  
     st.subheader("Choose Stat Type")
     stat_col1, stat_col2 = st.columns(2)
 
@@ -576,8 +577,6 @@ if st.session_state.active_feature == "player_comp":
 
 # Execute the Functions
 if st.session_state.active_feature == "player_comp" and st.session_state.stat_type:
-    st.write(f"**Selected Stat Type:** {st.session_state.stat_type}")
-
     if st.session_state.stat_type == "standard":
         player_comp(df)  # Function for standard stats
     elif st.session_state.stat_type == "per36":
