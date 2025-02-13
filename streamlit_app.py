@@ -360,6 +360,8 @@ def player_comp_p36(df):
     else:
         st.write("No years available in the data.")
 
+    st.write(f"Year: {selected_year}, Player: {selected_player}")
+
 
 ###############################################################################################################  --- Statline Comparison ---
 
