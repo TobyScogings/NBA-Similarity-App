@@ -350,7 +350,7 @@ def player_comp_p36(df):
     
             try:
                 index_input = p36[(p36['Full Name'] == selected_player) & (p36['year'] == selected_year)].index[0]
-                similarity(selected_player, selected_year, index_input)
+                #similarity(selected_player, selected_year, index_input)
     
             except IndexError:
                 st.error(f"No data found for {selected_player} in {selected_year}. Please select a different player or year.")
