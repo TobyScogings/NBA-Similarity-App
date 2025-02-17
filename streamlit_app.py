@@ -244,12 +244,24 @@ def player_inputs(df):
             player_display_name = f"{row['Full Name']} ({row['team_name']})"
             players_in_year.append(player_display_name)
             player_name_map[player_display_name] = row['Full Name']
+
+        if players_in_year:
+            # Check if player is already selected in session state
+            if 'selected_player' in st.session_state:
+                selected_display_name = st.session_state.selected_player
+            else:
+                selected_display_name = players_in_year[0]  # Default to the first player in the list
+
+            selected_display_name = st.selectbox("Select Player", players_in_year, index=players_in_year.index(selected_display_name))
+            
+            # Store selected player in session state
+            st.session_state.selected_player = selected_display_name
+
+            # Get the actual player name from the mapping
+            selected_player = player_name_map[selected_display_name]
     
         if players_in_year:
             selected_display_name = st.selectbox("Select Player", players_in_year)
-    
-            # Get the actual player name from the mapping
-            selected_player = player_name_map[selected_display_name]
     
             try:
                 index_input = df[(df['Full Name'] == selected_player) & (df['year'] == selected_year)].index[0]
