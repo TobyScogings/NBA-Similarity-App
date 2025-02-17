@@ -64,10 +64,12 @@ def similarity(name_input, year_input, index_input):
             data = std_data.copy()
             df = std.copy()
             nt_df = non_transform_df.copy()
+            stat_choice = 'Regular'
         elif st.session_state.stat_type == "per36":
             data = p36_data.copy()
             df = p36.copy()
             nt_df = non_transform_p36.copy()
+            stat_choice = 'Per 36'
     
     target_stats = data.iloc[index_input].values.reshape(1, -1)
     target_stats_df = pd.DataFrame(target_stats, columns=data.columns)
@@ -95,7 +97,7 @@ def similarity(name_input, year_input, index_input):
 
 ###############################################################################################################  --- Chosen Player Stats ---    
 
-    st.write(f"Target Player's Stats for {name_input} in {year_input}:")
+    st.write(f"Target Player's {stat_choice} Stats for {name_input} in {year_input}:")
     target_player_info = nt_df.iloc[index_input].to_frame().T
     st.dataframe(target_player_info[['Full Name', 'year', *data.columns]].style.format(precision=2), hide_index=True)
 
