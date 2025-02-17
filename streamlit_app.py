@@ -246,11 +246,13 @@ def player_inputs(df):
             player_name_map[player_display_name] = row['Full Name']
             
         if players_in_year:
-            # Check if player is already selected in session state
             if 'selected_player' in st.session_state:
                 selected_display_name = st.session_state.selected_player
             else:
-                selected_display_name = players_in_year[0]  # Default to the first player in the list
+                selected_display_name = players_in_year[0] 
+
+            if selected_display_name not in players_in_year:
+            selected_display_name = players_in_year[0]
 
             selected_display_name = st.selectbox("Select Player", players_in_year, index=players_in_year.index(selected_display_name))
             
