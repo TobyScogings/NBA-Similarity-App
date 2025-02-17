@@ -233,10 +233,23 @@ def player_inputs(df):
     
     # Player selection (dynamically populated based on selected year)
     if selected_year is not None:  # Checks if a year has been selected
-        players_in_year = df[df['year'] == selected_year].sort_values(by='Full Name')['Full Name'].tolist()
+        players_df = df[df['year'] == selected_year].sort_values(by='Full Name')
+
+        # Combine player names with their team and then map this back to just their original name so we can reference the index
+        players_in_year = []
+        player_name_map = {}
+    
+        # Iterate through rows and join names and teams and create our mapping
+        for _, row in players_df.iterrows():
+            player_display_name = f"{row['Full Name']} ({row['team_name']})"
+            players_in_year.append(player_display_name)
+            player_name_map[player_display_name] = row['Full Name']
     
         if players_in_year:
-            selected_player = st.selectbox("Select Player", players_in_year)
+            selected_display_name = st.selectbox("Select Player", players_in_year)
+    
+            # Get the actual player name from the mapping
+            selected_player = player_name_map[selected_display_name]
     
             try:
                 index_input = df[(df['Full Name'] == selected_player) & (df['year'] == selected_year)].index[0]
