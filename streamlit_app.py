@@ -252,7 +252,7 @@ def player_inputs(df):
                 selected_display_name = players_in_year[0] 
 
             if selected_display_name not in players_in_year:
-            selected_display_name = players_in_year[0]
+                selected_display_name = players_in_year[0]
 
             selected_display_name = st.selectbox("Select Player", players_in_year, index=players_in_year.index(selected_display_name))
             
