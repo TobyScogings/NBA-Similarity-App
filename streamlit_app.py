@@ -119,6 +119,11 @@ def similarity(name_input, year_input, index_input):
 
             percentile_df_for_chart['Percentile'] = percentile_df_for_chart['Percentile'].apply(lambda x: round(x))
             percentile_df_for_chart['Actual Value'] = percentile_df_for_chart['Actual Value'].apply(lambda x: round(x, 2))
+
+            # Negative stats need to be inverted
+            
+            invert_stats = ["Fouls", "Turnovers"]
+            percentile_df_for_chart.loc[percentile_df_for_chart["Stat"].isin(invert_stats), "Percentile"] = 100 - percentile_df_for_chart["Percentile"]
                 
             chart = alt.Chart(percentile_df_for_chart).mark_bar().encode(
             x=alt.X('Percentile:Q', title='Percentile'),
@@ -127,7 +132,7 @@ def similarity(name_input, year_input, index_input):
                         
             tooltip=[
             alt.Tooltip('Stat:N', title='Stat'),
-            alt.Tooltip('Percentile:Q', title='Percentile'),
+            alt.Tooltip('Percentile:Q', title='Percentile', scale=alt.Scale(domain=[0, 100])),
             alt.Tooltip('Actual Value:Q', title='Actual Stat Value')
             ]
             
@@ -159,9 +164,14 @@ def similarity(name_input, year_input, index_input):
                 
                 percentile_df_for_chart['Percentile'] = percentile_df_for_chart['Percentile'].apply(lambda x: round(x))
                 percentile_df_for_chart['Actual Value'] = percentile_df_for_chart['Actual Value'].apply(lambda x: round(x, 2))
+
+                # Negative stats need to be inverted
+            
+                invert_stats = ["Fouls", "Turnovers"]
+                percentile_df_for_chart.loc[percentile_df_for_chart["Stat"].isin(invert_stats), "Percentile"] = 100 - percentile_df_for_chart["Percentile"]
                 
                 chart = alt.Chart(percentile_df_for_chart).mark_bar().encode(
-                x=alt.X('Percentile:Q', title='Percentile'),
+                x=alt.X('Percentile:Q', title='Percentile', scale=alt.Scale(domain=[0, 100])),
                 y=alt.Y('Stat:N', sort=data.columns.tolist(), title='Stat'),
                 color=alt.Color('Percentile:Q', scale=alt.Scale(domain=[0, 100], range=['red', 'green']), legend=None),
                 tooltip=[
