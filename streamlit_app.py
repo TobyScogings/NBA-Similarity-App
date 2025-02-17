@@ -152,7 +152,6 @@ def similarity(name_input, year_input, index_input):
             year_data = nt_df[nt_df['year'] == 2024]
             percentile_df_year = year_data[data.columns].apply(lambda x: x.rank(pct=True) * 100)
         
-            # ***Correct way to get the percentile***
             target_player_row = nt_df[(nt_df['Full Name'] == name_input) & (nt_df['year'] == 2024)]
             if not target_player_row.empty: #Check to make sure the row exists
                 target_player_index_year = target_player_row.index[0]
@@ -186,6 +185,8 @@ def similarity(name_input, year_input, index_input):
                 st.altair_chart(chart, use_container_width=True)
             else:
                 st.write(f"No data found for {name_input} in {year_input} to calculate percentiles.")
+    else:
+        st.subheader("This player has no data for the 2024/25 season to compare to!")
 
 
 ###############################################################################################################  --- Similar Players Output ---    
