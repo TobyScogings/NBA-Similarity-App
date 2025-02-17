@@ -185,8 +185,6 @@ def similarity(name_input, year_input, index_input):
                 st.altair_chart(chart, use_container_width=True)
             else:
                 st.write(f"No data found for {name_input} in {year_input} to calculate percentiles.")
-        else:
-            st.subheader("This player has no data for the 2024/25 season to compare to!")
 
 
 ###############################################################################################################  --- Similar Players Output ---    
