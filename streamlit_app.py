@@ -241,7 +241,7 @@ def player_inputs(df):
     
         # Iterate through rows and join names and teams and create our mapping
         for _, row in players_df.iterrows():
-            player_display_name = f"{row['Full Name']} ({row['Team']})"
+            player_display_name = f"{row['Full Name']} ({row['team_name']})"
             players_in_year.append(player_display_name)
             player_name_map[player_display_name] = row['Full Name']
     
