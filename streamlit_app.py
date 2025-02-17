@@ -260,10 +260,6 @@ def player_inputs(df):
             # Get the actual player name from the mapping
             selected_player = player_name_map[selected_display_name]
     
-        if players_in_year:
-            selected_display_name = st.selectbox("Select Player", players_in_year)
-            selected_player = player_name_map[selected_display_name]
-    
             try:
                 index_input = df[(df['Full Name'] == selected_player) & (df['year'] == selected_year)].index[0]
                 similarity(selected_player, selected_year, index_input)
