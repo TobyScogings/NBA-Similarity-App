@@ -584,7 +584,7 @@ if st.session_state.active_feature == "player_comp":
     st.title("Player Comparison")  
 
 # Execute the Functions
-if st.session_state.active_feature == "player_comp"
+if st.session_state.active_feature == "player_comp":
     stat_choice(df)  # Function for standard stats
 elif st.session_state.active_feature == "stat_comp":
     stat_comp(non_transform_df)
