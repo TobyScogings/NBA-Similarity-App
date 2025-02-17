@@ -147,8 +147,8 @@ def similarity(name_input, year_input, index_input):
     
 ###############################################################################################################  --- 2024 Percentile Graph ---
     
-    if year_input != 2024 and df[(df['Full Name'] == name_input) & (df['year'] == 2024)].empty == False:
-        with col2:
+    with col2:
+        if year_input != 2024 and df[(df['Full Name'] == name_input) & (df['year'] == 2024)].empty == False:
             year_data = nt_df[nt_df['year'] == 2024]
             percentile_df_year = year_data[data.columns].apply(lambda x: x.rank(pct=True) * 100)
         
@@ -185,8 +185,8 @@ def similarity(name_input, year_input, index_input):
                 st.altair_chart(chart, use_container_width=True)
             else:
                 st.write(f"No data found for {name_input} in {year_input} to calculate percentiles.")
-    else:
-        st.subheader("This player has no data for the 2024/25 season to compare to!")
+        else:
+            st.subheader("This player has no data for the 2024/25 season to compare to!")
 
 
 ###############################################################################################################  --- Similar Players Output ---    
