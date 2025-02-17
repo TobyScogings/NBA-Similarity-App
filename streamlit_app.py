@@ -208,6 +208,7 @@ def stat_choice():
         st.session_state.stat_type = "standard"
     
     st.subheader("Choose Stat Type")
+    st.write("Choosing your stat type will change the players available. Per 36 data is only available for players that have played a minimum of 5 average minutes over more than one season. If a player does not have per 36 data after selection, your selection will be reset.")
     stat_col1, stat_col2 = st.columns(2)
 
     with stat_col1:
