@@ -13,7 +13,7 @@ from sklearn.preprocessing import StandardScaler
 st.set_page_config(layout="wide")
 
 # Load data 
-df = pd.read_csv("model_data.csv")
+std = pd.read_csv("model_data.csv")
 non_transform_df = pd.read_csv("model_data_pre-transform.csv")
 p36 = pd.read_csv("per_36.csv")
 non_transform_p36 = pd.read_csv("reg_per_36.csv")
@@ -38,12 +38,14 @@ columns_rename = {
     'turnovers': 'Turnovers'
 }
 
-df = df.rename(columns=columns_rename)
+std = std.rename(columns=columns_rename)
 non_transform_df = non_transform_df.rename(columns=columns_rename)
 p36 = p36.rename(columns=columns_rename)
 non_transform_p36 = non_transform_p36.rename(columns=columns_rename)
 
-data = df.drop(columns=['player_id', 'Full Name', 'team_name', 'year'])
+std_data = std.drop(columns=['player_id', 'Full Name', 'team_name', 'year'])
+p36_data = p36.drop(columns=['player_id', 'Full Name', 'team_name', 'year'])
+
 # Percentiles Bar Chart
 custom_order = ['Points', 'Rebounds', 'Assists', 'Steals', 'Blocks', 'Minutes', 'FGA', 'FG%', '3PA', '3P%', 'FTA', 'FT%', 'Def. Rebounds', 'Off. Rebounds', 'Fouls', 'Turnovers']
 
@@ -57,6 +59,16 @@ def similarity(name_input, year_input, index_input):
         st.error("Invalid input. Please make sure to select a player and year.")
         return
 
+    if "stat_type" in st.session_state:
+        if st.session_state.stat_type == "standard":
+            data = std_data.copy()
+            df = std.copy()
+            nt_df = non_transform_df.copy()
+        elif st.session_state.stat_type == "per36":
+            data = p36_data.copy()
+            df = p36.copy()
+            nt_df = non_transform_p36.copy()
+    
     target_stats = data.iloc[index_input].values.reshape(1, -1)
     target_stats_df = pd.DataFrame(target_stats, columns=data.columns)
 
@@ -80,7 +92,7 @@ def similarity(name_input, year_input, index_input):
 ###############################################################################################################  --- Chosen Player Stats ---    
 
     st.write(f"Target Player's Stats for {name_input} in {year_input}:")
-    target_player_info = non_transform_df.iloc[index_input].to_frame().T
+    target_player_info = nt_df.iloc[index_input].to_frame().T
     st.dataframe(target_player_info[['Full Name', 'year', *data.columns]].style.format(precision=2), hide_index=True)
 
     col1, col2 = st.columns(2)
@@ -88,11 +100,11 @@ def similarity(name_input, year_input, index_input):
 ###############################################################################################################  --- Chosen Season Percentile Graph ---    
     
     with col1:
-        year_data = non_transform_df[non_transform_df['year'] == year_input]
+        year_data = nt_df[nt_df['year'] == year_input]
         percentile_df_year = year_data[data.columns].apply(lambda x: x.rank(pct=True) * 100)
     
         # ***Correct way to get the percentile***
-        target_player_row = non_transform_df[(non_transform_df['Full Name'] == name_input) & (non_transform_df['year'] == year_input)]
+        target_player_row = nt_df[(nt_df['Full Name'] == name_input) & (nt_df['year'] == year_input)]
         if not target_player_row.empty: #Check to make sure the row exists
             target_player_index_year = target_player_row.index[0]
             target_player_percentile = percentile_df_year.loc[target_player_index_year] #Use .loc to access the percentile by index
@@ -128,11 +140,11 @@ def similarity(name_input, year_input, index_input):
     
     if year_input != 2024 and df[(df['Full Name'] == name_input) & (df['year'] == 2024)].empty == False:
         with col2:
-            year_data = non_transform_df[non_transform_df['year'] == 2024]
+            year_data = nt_df[nt_df['year'] == 2024]
             percentile_df_year = year_data[data.columns].apply(lambda x: x.rank(pct=True) * 100)
         
             # ***Correct way to get the percentile***
-            target_player_row = non_transform_df[(non_transform_df['Full Name'] == name_input) & (non_transform_df['year'] == 2024)]
+            target_player_row = nt_df[(nt_df['Full Name'] == name_input) & (nt_df['year'] == 2024)]
             if not target_player_row.empty: #Check to make sure the row exists
                 target_player_index_year = target_player_row.index[0]
                 target_player_percentile = percentile_df_year.loc[target_player_index_year] #Use .loc to access the percentile by index
@@ -165,7 +177,7 @@ def similarity(name_input, year_input, index_input):
 ###############################################################################################################  --- Similar Players Output ---    
     
     if valid_indices:
-        similar_player_info = non_transform_df.iloc[valid_indices].drop(columns=['player_id'])
+        similar_player_info = nt_df.iloc[valid_indices].drop(columns=['player_id'])
         st.write(f"5 most similar players to {name_input} in {year_input}:")
         st.dataframe(similar_player_info.style.format(precision=2), hide_index=True)
     else:
@@ -178,7 +190,7 @@ knn.fit(data)
 ###############################################################################################################  --- Player Stat Comparison ---
 
 
-def stat_choice(df):
+def stat_choice():
 
     if "stat_type" not in st.session_state:
         st.session_state.stat_type = "standard"
@@ -196,7 +208,7 @@ def stat_choice(df):
 
     if "stat_type" in st.session_state:
         if st.session_state.stat_type == "standard":
-            player_inputs(df)
+            player_inputs(std)
         elif st.session_state.stat_type == "per36":
             player_inputs(p36)
 
@@ -388,10 +400,10 @@ def player_inputs(df):
 
 ###############################################################################################################  --- Statline Comparison ---
 
-def stat_similarity(filled_columns, df, non_transform_df, user_input_df, comp_df):
+def stat_similarity(filled_columns, non_transform_df, user_input_df, comp_df):
     # Create a DataFrame using only the columns that were filled in by the user
 
-    stat_data = data[filled_columns]
+    stat_data = std_data[filled_columns]
     
     # Initialize Nearest Neighbors model
     stat_knn = NearestNeighbors(n_neighbors=20, metric='euclidean')
@@ -541,7 +553,7 @@ def stat_comp(non_transform_df):
 ################################################################################################################
             
 
-            stat_similarity(filled_columns, df, non_transform_df, user_input_df, comp_df)
+            stat_similarity(filled_columns, non_transform_df, user_input_df, comp_df)
 
 
 
@@ -592,6 +604,6 @@ if st.session_state.active_feature == "player_comp":
 
 # Execute the Functions
 if st.session_state.active_feature == "player_comp":
-    stat_choice(df)  # Function for standard stats
+    stat_choice()  # Function for standard stats
 elif st.session_state.active_feature == "stat_comp":
     stat_comp(non_transform_df)
