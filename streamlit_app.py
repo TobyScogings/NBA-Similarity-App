@@ -208,7 +208,7 @@ def stat_choice():
         st.session_state.stat_type = "standard"
     
     st.subheader("Choose Stat Type")
-    st.write("Choosing your stat type will change the players available. Per 36 data is only available for players that have played a minimum of 5 average minutes over more than one season. If a player does not have per 36 data after selection, your selection will be reset.")
+    st.write("Choosing your stat type will change the players available.")
     stat_col1, stat_col2 = st.columns(2)
 
     with stat_col1:
@@ -449,6 +449,8 @@ Future updates include per 36 standardisation, player filtering and more!""")
 with st.sidebar:
     st.subheader("NBA Comparison Tool")
     st.markdown("This app has been created using NBA player statistics since the 2020/2021 season. This app allows you to directly compare actual seasonal averages or to find similar statistical seasons to custom statline inputs. Similarities are calculated using K-Nearest Neighbour modelling and my data was sourced from [rapidapi.com](https://rapidapi.com/api-sports/api/api-nba)")
+    st.subheader("Per 36 Limitations")
+    st.write(f"Per 36 data is only available for players that have played a minimum of 5 average minutes over more than one season. If a player does not have per 36 data after selection, your selection will be reset.\n"
     st.markdown("To see how this page was developed, visit my [github](https://github.com/TobyScogings/NBA-Similarity-App)")
 
 import streamlit as st
