@@ -180,17 +180,24 @@ knn.fit(data)
 
 def stat_choice(df):
 
+    if "stat_type" not in st.session_state:
+        st.session_state.stat_type = "standard"
+    
     st.subheader("Choose Stat Type")
     stat_col1, stat_col2 = st.columns(2)
 
     with stat_col1:
         if st.button("📊 Standard Stats", key="standard_stats"):
             st.session_state.stat_type = "standard"
-            player_inputs(df)
 
     with stat_col2:
         if st.button("⏳ Per 36 Stats", key="per36_stats"):
             st.session_state.stat_type = "per36"
+
+    if "stat_type" in st.session_state:
+        if st.session_state.stat_type == "standard":
+            player_inputs(df)
+        elif st.session_state.stat_type == "per36":
             player_inputs(p36)
 
 def player_inputs(df):
@@ -562,7 +569,7 @@ if "active_feature" not in st.session_state:
     st.session_state.active_feature = "player_comp"
 
 if "stat_type" not in st.session_state:
-    st.session_state.stat_type = None  # Default to no selection
+    st.session_state.stat_type = "player_comp"  # Default to no selection
 
 # Main Feature Selection
 st.header("Choose a Feature")
