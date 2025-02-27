@@ -4,6 +4,12 @@
 ### Data Sourced Jan. 28th 2025
 ### Developed by Toby Scogings
 
+# Modules used:
+# - Streamlit - online hosting of application
+# - Pandas and Numpy - used for data storage and manipulation
+# - NearestNeighbours - chosen model type for this project
+# - Altair - used for data visualisations - more customisable for this project than seaborn, for example.
+
 import streamlit as st
 import pandas as pd, numpy as np
 from sklearn.neighbors import NearestNeighbors
@@ -43,10 +49,12 @@ non_transform_df = non_transform_df.rename(columns=columns_rename)
 p36 = p36.rename(columns=columns_rename)
 non_transform_p36 = non_transform_p36.rename(columns=columns_rename)
 
+# Extract only data
+
 std_data = std.drop(columns=['player_id', 'Full Name', 'team_name', 'year'])
 p36_data = p36.drop(columns=['player_id', 'Full Name', 'team_name', 'year'])
 
-# Percentiles Bar Chart
+# Percentiles bar chart col order
 custom_order = ['Points', 'Rebounds', 'Assists', 'Steals', 'Blocks', 'Minutes', 'FGA', 'FG%', '3PA', '3P%', 'FTA', 'FT%', 'Def. Rebounds', 'Off. Rebounds', 'Fouls', 'Turnovers']
 
 # Calculate the percentiles
@@ -55,10 +63,13 @@ p36_percentile_df = non_transform_p36[custom_order].apply(lambda x: x.rank(pct=T
 
 ### Player Similarity Function
 def similarity(name_input, year_input, index_input):
+
+    # Validate the player is a valid choice
     if not name_input or not year_input or index_input is None:
         st.error("Invalid input. Please make sure to select a player and year.")
         return
 
+    # Update the variable to reference the relative data to the chosen stat type.
     if "stat_type" in st.session_state:
         if st.session_state.stat_type == "standard":
             data = std_data.copy()
@@ -225,6 +236,8 @@ def stat_choice():
         elif st.session_state.stat_type == "per36":
             player_inputs(p36)
 
+###############################################################################################################  --- User Player Selection ---
+
 def player_inputs(df):
     
     # Year selection
@@ -278,11 +291,11 @@ def player_inputs(df):
 ###############################################################################################################  --- Statline Comparison ---
 
 def stat_similarity(filled_columns, non_transform_df, user_input_df, comp_df):
+    
     # Create a DataFrame using only the columns that were filled in by the user
-
     stat_data = std_data[filled_columns]
     
-    # Initialize Nearest Neighbors model
+    # Initialize model
     stat_knn = NearestNeighbors(n_neighbors=20, metric='euclidean')
     
     # Fit the model with the comparison DataFrame
@@ -437,7 +450,7 @@ def stat_comp(non_transform_df):
 
 ################################################################################################################ --- Streamlit UI ---
 
-
+# Define on-screen text
 st.title("NBA Player Similarity App")  
 
 st.subheader("What does this app do?")
@@ -452,8 +465,6 @@ with st.sidebar:
     st.subheader("Per 36 Limitations")
     st.write(f"Per 36 data is only available for players that have played a minimum of 5 average minutes over more than one season. If a player does not have per 36 data after selection, your selection will be reset.\n")
     st.markdown("To see how this page was developed, visit my [github](https://github.com/TobyScogings/NBA-Similarity-App)")
-
-import streamlit as st
 
 # Initialize session state variables
 if "active_feature" not in st.session_state:
@@ -470,12 +481,12 @@ choice_col1, choice_col2 = st.columns(2)
 with choice_col1:
     if st.button("🏀 Player Comparison", key="player_button"):
         st.session_state.active_feature = "player_comp"
-        st.session_state.stat_type = None  # Reset stat selection
+        st.session_state.stat_type = None  
 
 with choice_col2:
     if st.button("📊 Statline Comparison", key="stat_button"):
         st.session_state.active_feature = "stat_comp"
-        st.session_state.stat_type = None  # Reset stat selection
+        st.session_state.stat_type = None 
 
 # If Player Comparison is Selected, Show Stat Options
 if st.session_state.active_feature == "player_comp":
@@ -483,6 +494,6 @@ if st.session_state.active_feature == "player_comp":
 
 # Execute the Functions
 if st.session_state.active_feature == "player_comp":
-    stat_choice()  # Function for standard stats
+    stat_choice()
 elif st.session_state.active_feature == "stat_comp":
     stat_comp(non_transform_df)
