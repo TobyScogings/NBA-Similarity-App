@@ -64,4 +64,8 @@ Ultimately, the outcome so far has been an application that takes any player to 
 - Further my understanding on the importance of data preparation in creating an effective model 
 - Strengthen python techniques, ranging from basic iteratiion, looping or exception handling to more complex technologies like `pandas` and `sklearn`
 
+## Potential Future Improvements 🔮
 
+- Improved input mechanisms, for example team filtering, for cases where player name is not known
+- Improved output specificiations - allow for users to specify teams, years, minutes etc of the similar players
+- Generate more individual outputs - use the data to create visual outputs?
