@@ -39,10 +39,6 @@ Ultimately, the outcome so far has been an application that takes any player to 
   - `per_36.csv`
   - `reg_per_36.csv`
  
-
-
-
-
 ## Project Structure 🔀
 
 - **Problem Framing**: Began with devising a problem. Inspired when watching basketball and noticing low contextualisation of stats I was reading.
@@ -54,4 +50,18 @@ Ultimately, the outcome so far has been an application that takes any player to 
 - **Application Hosting**: Use streamlit to validate user inputs and create interactivity with the system. Allow for dynamic outputs relevant to user inputs.
 - **Project Presentation**: Demonstrate and explain this process to a live audience, showing the process from start to finish with a demonstration of how to system works and how I have used it to enhance my experience.
 - **Application Improvement**: Post-completion of the project, develop new features and improve functionality. Some of these improvements include statline normalisation, custom statline comparison and various QoL and UI improvements.
+
+## Outcomes 🎉
+
+*Technical*:
+
+- The `.csv` files are the outcome of both my API access and the transformations I conducted upon this data. 
+- The overall deliverable from this project is the [web application](https://nbasimilarity.streamlit.app/) I have created hosted on streamlit. This has fulfilled many of the desired functions that I envisioned upon inception of the project.
+
+*Personal*:
+
+- Learn about the power of data collection via APIs
+- Further my understanding on the importance of data preparation in creating an effective model 
+- Strengthen python techniques, ranging from basic iteratiion, looping or exception handling to more complex technologies like `pandas` and `sklearn`
+
 
