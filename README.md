@@ -69,3 +69,4 @@ Ultimately, the outcome so far has been an application that takes any player to 
 - Improved input mechanisms, for example team filtering, for cases where player name is not known
 - Improved output specificiations - allow for users to specify teams, years, minutes etc of the similar players
 - Generate more individual outputs - use the data to create visual outputs?
+- Create a live connection to the API to update stats after every game
